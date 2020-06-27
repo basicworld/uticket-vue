@@ -91,6 +91,31 @@ export const constantRoutes = [
   },
 
   {
+    path: '/tk-center',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: '工单中心',
+        component: () => import('@/views/tk-center/index'),
+        meta: { title: '工单中心', icon: 'form' }
+      }
+    ]
+  },
+  {
+    path: '/TicketDetail',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: '工单详情',
+        component: () => import('@/views/tk-center/components/TicketDetail.vue'),
+        meta: { title: '工单详情', icon: 'form' }
+      }
+    ]
+  },
+
+  {
     path: '/nested',
     component: Layout,
     redirect: '/nested/menu1',
