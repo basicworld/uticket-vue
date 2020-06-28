@@ -1,5 +1,5 @@
 <template>
-  <el-container style=" border: 1px solid #eee">
+  <el-container style="height: 100vh; border: 1px solid #eee">
     <el-aside width="200px" style="height: 100vh; background-color: rgb(238, 241, 246);">
       <el-menu
         default-active="1"

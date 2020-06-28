@@ -27,13 +27,11 @@
           @row-click="doShowDetail"
         >
           <el-table-column type="selection" width="45" />
-          <el-table-column prop="date" label="主题" width="200" />
-          <el-table-column prop="" label="状态" width="80" />
-          <el-table-column prop="" label="优先级" width="80" />
-          <el-table-column prop="date" label="受理客服" width="140" />
-          <el-table-column prop="date" label="客户" width="120" />
+          <el-table-column prop="date" label="公司名称" width="200" />
+          <el-table-column prop="" label="描述" width="200" />
+          <el-table-column prop="" label="公司地址" width="200" />
+          <el-table-column prop="date" label="公司域名" width="140" />
           <el-table-column prop="date" label="创建时间" width="140" />
-          <el-table-column prop="date" label="描述" width="200" />
         </el-table>
         <pagination
           v-show="total >= 0"
@@ -53,13 +51,13 @@
         <TicketDetail />
       </el-dialog>
       <el-dialog
-        title="新增工单"
+        title="新增"
         width="70%"
         top="10vh"
-        :visible.sync="newTkDialogVisible"
+        :visible.sync="newCusDialogVisible"
         modal-append-to-body="true"
       >
-        <NewTicket />
+        <NewCustomer />
       </el-dialog>
 
       </el-dialog></el-container>
@@ -69,9 +67,9 @@
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import TicketDetail from '@/views/tk-detail'
-import NewTicket from '@/views/new-tk'
+import NewCustomer from '@/views/new-tk'
 export default {
-  components: { Pagination, TicketDetail, NewTicket },
+  components: { Pagination, TicketDetail, NewCustomer },
   data() {
     const item = {
       date: '2016-05-02',
@@ -79,7 +77,7 @@ export default {
       address: '上海市普陀区金沙江路 1518 弄'
     }
     return {
-      newTkDialogVisible: false,
+      newCusDialogVisible: false,
       total: 0,
       listLoading: true,
       listQuery: {
@@ -107,7 +105,7 @@ export default {
   },
   methods: {
     handlePopNewTkDialog() {
-      this.newTkDialogVisible = true
+      this.newCusDialogVisible = true
     },
     doShowDetail() {
       this.$message('doShowDetail!')

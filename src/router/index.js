@@ -126,6 +126,42 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/new-cus',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: '新增客户',
+        component: () => import('@/views/new-cus/index'),
+        meta: { title: '新增客户', icon: 'form' }
+      }
+    ]
+  },
+  {
+    path: '/cus-center',
+    component: Layout,
+    redirect: '/cus-center/cus-man',
+    name: '客户中心',
+    meta: {
+      title: '客户中心',
+      icon: 'nested'
+    },
+    children: [
+      {
+        path: 'cus-man',
+        component: () => import('@/views/cus-center/cus-man/index'),
+        name: '客户管理',
+        meta: { title: '客户管理' }
+      },
+      {
+        path: 'cmp-man',
+        component: () => import('@/views/cus-center/cmp-man/index'),
+        name: '公司管理',
+        meta: { title: '公司管理' }
+      }
+    ]
+  },
+  {
     path: '/nested',
     component: Layout,
     redirect: '/nested/menu1',

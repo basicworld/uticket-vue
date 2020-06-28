@@ -17,7 +17,7 @@
           <el-form-item>
             <el-button type="primary" @click="onSubmit">查询</el-button>
             <el-button @click="onSubmit">重置</el-button>
-            <el-button type="primary" @click="handlePopNewTkDialog">新增工单</el-button>
+            <el-button type="primary" @click="handlePopNewTkDialog">新建客户</el-button>
           </el-form-item>
         </el-form>
 
@@ -27,13 +27,14 @@
           @row-click="doShowDetail"
         >
           <el-table-column type="selection" width="45" />
-          <el-table-column prop="date" label="主题" width="200" />
-          <el-table-column prop="" label="状态" width="80" />
-          <el-table-column prop="" label="优先级" width="80" />
-          <el-table-column prop="date" label="受理客服" width="140" />
-          <el-table-column prop="date" label="客户" width="120" />
-          <el-table-column prop="date" label="创建时间" width="140" />
-          <el-table-column prop="date" label="描述" width="200" />
+          <el-table-column prop="date" label="客户名称" width="200" />
+          <el-table-column prop="" label="等级" width="80" />
+          <el-table-column prop="" label="公司" width="80" />
+          <el-table-column prop="date" label="邮箱" width="140" />
+          <el-table-column prop="date" label="电话" width="120" />
+          <el-table-column prop="date" label="客户来源" width="120" />
+          <el-table-column prop="date" label="所在省" width="120" />
+          <el-table-column prop="date" label="最后登陆时间" width="120" />
         </el-table>
         <pagination
           v-show="total >= 0"
@@ -53,13 +54,12 @@
         <TicketDetail />
       </el-dialog>
       <el-dialog
-        title="新增工单"
-        width="70%"
+        title="新建客户"
         top="10vh"
-        :visible.sync="newTkDialogVisible"
+        :visible.sync="newCusDialogVisible"
         modal-append-to-body="true"
       >
-        <NewTicket />
+        <NewCustomer />
       </el-dialog>
 
       </el-dialog></el-container>
@@ -69,9 +69,9 @@
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import TicketDetail from '@/views/tk-detail'
-import NewTicket from '@/views/new-tk'
+import NewCustomer from '@/views/new-cus'
 export default {
-  components: { Pagination, TicketDetail, NewTicket },
+  components: { Pagination, TicketDetail, NewCustomer },
   data() {
     const item = {
       date: '2016-05-02',
@@ -79,7 +79,7 @@ export default {
       address: '上海市普陀区金沙江路 1518 弄'
     }
     return {
-      newTkDialogVisible: false,
+      newCusDialogVisible: false,
       total: 0,
       listLoading: true,
       listQuery: {
@@ -107,7 +107,7 @@ export default {
   },
   methods: {
     handlePopNewTkDialog() {
-      this.newTkDialogVisible = true
+      this.newCusDialogVisible = true
     },
     doShowDetail() {
       this.$message('doShowDetail!')
