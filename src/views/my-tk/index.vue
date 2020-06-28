@@ -1,29 +1,5 @@
 <template>
   <el-container style=" border: 1px solid #eee">
-    <el-aside width="200px" style="height: 100vh; background-color: rgb(238, 241, 246)">
-      <el-menu
-        default-active="1"
-        class="el-menu-vertical-demo"
-        @open="handleOpen"
-        @close="handleClose"
-      >
-        <el-menu-item index="1">
-          <span slot="title">未分配</span>
-        </el-menu-item>
-        <el-menu-item index="2">
-          <span slot="title">解决中</span>
-        </el-menu-item>
-        <el-menu-item index="3">
-          <span slot="title">已解决</span>
-        </el-menu-item>
-        <el-menu-item index="4">
-          <span slot="title">已关闭</span>
-        </el-menu-item>
-        <el-menu-item index="5">
-          <span slot="title">所有工单</span>
-        </el-menu-item>
-      </el-menu>
-    </el-aside>
 
     <el-container>
 
@@ -41,6 +17,7 @@
           <el-form-item>
             <el-button type="primary" @click="onSubmit">查询</el-button>
             <el-button @click="onSubmit">重置</el-button>
+            <el-button type="primary" @click="handlePopNewTkDialog">新增工单</el-button>
           </el-form-item>
         </el-form>
 
@@ -75,17 +52,26 @@
       >
         <TicketDetail />
       </el-dialog>
+      <el-dialog
+        title="新增工单"
+        width="70%"
+        top="10vh"
+        :visible.sync="newTkDialogVisible"
+        modal-append-to-body="true"
+      >
+        <NewTicket />
+      </el-dialog>
 
-    </el-container>
+      </el-dialog></el-container>
   </el-container>
 </template>
 
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import TicketDetail from '@/views/tk-detail'
-
+import NewTicket from '@/views/new-tk'
 export default {
-  components: { Pagination, TicketDetail },
+  components: { Pagination, TicketDetail, NewTicket },
   data() {
     const item = {
       date: '2016-05-02',
@@ -93,6 +79,7 @@ export default {
       address: '上海市普陀区金沙江路 1518 弄'
     }
     return {
+      newTkDialogVisible: false,
       total: 0,
       listLoading: true,
       listQuery: {
@@ -119,6 +106,9 @@ export default {
     }
   },
   methods: {
+    handlePopNewTkDialog() {
+      this.newTkDialogVisible = true
+    },
     doShowDetail() {
       this.$message('doShowDetail!')
       this.dialogFormVisible = true

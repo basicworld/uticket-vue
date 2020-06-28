@@ -16,7 +16,7 @@
           <el-card class="box-card top-margin">
             <div slot="header" class="clearfix">
               <span>主题：张三的重置密码请求</span>
-              <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+              <el-button style="float: right; padding: 3px 0" type="text">编辑</el-button>
             </div>
             <div v-for="o in 4" :key="o" class="text item">
               {{ '列表内容 ' + o }}
@@ -25,8 +25,7 @@
 
           <el-card class="box-card top-margin">
             <div slot="header" class="clearfix">
-              <span>记录</span>
-              <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+              <span>添加记录</span>
             </div>
             <div>
               <el-form ref="form" :model="form" label-width="120px" size="mini">
@@ -49,7 +48,13 @@
                 </div>
               </el-form>
             </div>
-            <el-divider />
+          </el-card>
+
+          <el-card class="box-card top-margin">
+            <div slot="header" class="clearfix">
+              <span>历史记录</span>
+            </div>
+
             <div>
               <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
                 <el-tab-pane label="所有" name="first">所有</el-tab-pane>
@@ -65,7 +70,7 @@
           <el-card class="box-card">
             <div slot="header" class="clearfix">
               <span>属性</span>
-              <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+              <el-button style="float: right; padding: 3px 0" type="text">编辑</el-button>
             </div>
             <div v-for="o in 4" :key="o" class="text item">
               {{ '列表内容 ' + o }}
@@ -75,7 +80,7 @@
           <el-card class="box-card top-margin">
             <div slot="header" class="clearfix">
               <span>客户信息</span>
-              <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+              <el-button style="float: right; padding: 3px 0" type="text">编辑</el-button>
             </div>
             <div v-for="o in 4" :key="o" class="text item">
               {{ '列表内容 ' + o }}
@@ -98,6 +103,7 @@
 
 <script>
 export default {
+  name: 'TicketDetail',
   data() {
     return {
       innerVisible: false,

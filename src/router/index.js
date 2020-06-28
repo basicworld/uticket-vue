@@ -89,7 +89,18 @@ export const constantRoutes = [
       }
     ]
   },
-
+  {
+    path: '/my-tk',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: '我的工单',
+        component: () => import('@/views/my-tk/index'),
+        meta: { title: '我的工单', icon: 'form' }
+      }
+    ]
+  },
   {
     path: '/tk-center',
     component: Layout,
@@ -103,18 +114,17 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/TicketDetail',
+    path: '/my-setting',
     component: Layout,
     children: [
       {
         path: 'index',
-        name: '工单详情',
-        component: () => import('@/views/tk-center/components/TicketDetail.vue'),
-        meta: { title: '工单详情', icon: 'form' }
+        name: '个人设置',
+        component: () => import('@/views/my-setting/index'),
+        meta: { title: '个人设置', icon: 'form' }
       }
     ]
   },
-
   {
     path: '/nested',
     component: Layout,

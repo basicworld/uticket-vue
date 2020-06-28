@@ -14,6 +14,7 @@ module.exports = {
   // add your custom rules here
   //it is base on https://github.com/vuejs/eslint-config-vue
   rules: {
+    'vue/no-parsing-error': [2, { 'x-invalid-end-tag': false }],   // 关闭对iview end-tag 检查
     "vue/max-attributes-per-line": [2, {
       "singleline": 10,
       "multiline": {
