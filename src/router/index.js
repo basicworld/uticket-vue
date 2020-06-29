@@ -114,30 +114,6 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/my-setting',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: '个人设置',
-        component: () => import('@/views/my-setting/index'),
-        meta: { title: '个人设置', icon: 'form' }
-      }
-    ]
-  },
-  {
-    path: '/new-cus',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: '新增客户',
-        component: () => import('@/views/new-cus/index'),
-        meta: { title: '新增客户', icon: 'form' }
-      }
-    ]
-  },
-  {
     path: '/cus-center',
     component: Layout,
     redirect: '/cus-center/cus-man',

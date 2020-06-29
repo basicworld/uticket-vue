@@ -24,7 +24,6 @@
         <el-table
           :data="tableData"
           size="small"
-          @row-click="doShowDetail"
         >
           <el-table-column type="selection" width="45" />
           <el-table-column prop="date" label="主题" width="200" />
@@ -34,6 +33,12 @@
           <el-table-column prop="date" label="客户" width="120" />
           <el-table-column prop="date" label="创建时间" width="140" />
           <el-table-column prop="date" label="描述" width="200" />
+          <el-table-column fixed="right" label="操作" width="100">
+            <template slot-scope="scope">
+              <el-button type="text" size="small" @click="doShowDetail">查看</el-button>
+              <el-button type="text" size="small">编辑</el-button>
+            </template>
+          </el-table-column>
         </el-table>
         <pagination
           v-show="total >= 0"

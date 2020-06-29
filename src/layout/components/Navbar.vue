@@ -13,7 +13,12 @@
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
           <router-link to="/">
             <el-dropdown-item>
-              Home
+              首页
+            </el-dropdown-item>
+          </router-link>
+          <router-link to="/my-setting/index">
+            <el-dropdown-item>
+              个人设置
             </el-dropdown-item>
           </router-link>
           <a target="_blank" href="https://github.com/PanJiaChen/vue-admin-template/">
