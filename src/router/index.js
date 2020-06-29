@@ -138,6 +138,30 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/sys-setting',
+    component: Layout,
+    redirect: '/sys-setting/user-man',
+    name: '系统管理',
+    meta: {
+      title: '系统管理',
+      icon: 'nested'
+    },
+    children: [
+      {
+        path: 'user-man',
+        component: () => import('@/views/sys-setting/user-man/index'),
+        name: '用户管理',
+        meta: { title: '用户管理' }
+      },
+      {
+        path: 'group-man',
+        component: () => import('@/views/sys-setting/group-man/index'),
+        name: '用户组管理',
+        meta: { title: '用户组管理' }
+      }
+    ]
+  },
+  {
     path: '/nested',
     component: Layout,
     redirect: '/nested/menu1',
