@@ -1,6 +1,6 @@
 <template>
   <el-container style="height: 100vh; border: 1px solid #eee">
-    <el-aside width="200px" style="height: 100vh; background-color: rgb(238, 241, 246)">
+    <el-aside width="180px" style="height: 100vh; background-color: rgb(238, 241, 246)">
       <el-menu
         default-active="1"
         class="el-menu-vertical-demo"
@@ -47,31 +47,36 @@
         <el-table
           :data="tableData"
           size="small"
-          @row-click="doShowDetail"
         >
           <el-table-column type="selection" width="45" />
-          <el-table-column prop="date" label="主题" width="200" />
-          <el-table-column prop="" label="状态" width="80" />
-          <el-table-column prop="" label="优先级" width="80" />
-          <el-table-column prop="date" label="受理客服" width="140" />
-          <el-table-column prop="date" label="客户" width="120" />
-          <el-table-column prop="date" label="创建时间" width="140" />
-          <el-table-column prop="date" label="描述" width="200" />
+          <el-table-column prop="subject" label="标题" width="200" show-overflow-tooltip />
+          <el-table-column prop="status" label="状态" width="60" />
+          <el-table-column prop="priority" label="优先级" width="60" />
+          <el-table-column prop="assigneeName" label="受理客服" width="100" />
+          <el-table-column prop="userName" label="客户" width="100" />
+          <el-table-column prop="createdAt" label="创建时间" width="140" />
+          <el-table-column prop="content" label="内容" width="300" show-overflow-tooltip />
+          <el-table-column fixed="right" label="操作" width="100">
+            <template slot-scope="scope">
+              <el-button type="text" size="small" @click="doShowDetail">详情</el-button>
+              <el-button type="text" size="small">删除</el-button>
+            </template>
+          </el-table-column>
         </el-table>
         <pagination
           v-show="total >= 0"
           :total="total"
           :page.sync="listQuery.page"
           :limit.sync="listQuery.limit"
-          @pagination="getData"
+          @pagination="doQueryTableData"
         />
       </el-main>
 
       <el-dialog
         title="工单详情"
         :visible.sync="dialogFormVisible"
-        fullscreen="true"
-        modal-append-to-body="true"
+        fullscreen
+        modal-append-to-body
       >
         <TicketDetail />
       </el-dialog>
@@ -83,18 +88,14 @@
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import TicketDetail from '@/views/tk-detail'
+import { ticketListQueryApi } from '@/api/ticket'
 
 export default {
   components: { Pagination, TicketDetail },
   data() {
-    const item = {
-      date: '2016-05-02',
-      name: '王小虎',
-      address: '上海市普陀区金沙江路 1518 弄'
-    }
     return {
       total: 0,
-      listLoading: true,
+      listLoading: false,
       listQuery: {
         page: 1,
         limit: 10
@@ -103,7 +104,7 @@ export default {
         user: '',
         region: ''
       },
-      tableData: Array(20).fill(item),
+      tableData: [],
       dialogFormVisible: false,
       form: {
         name: '',
@@ -118,7 +119,18 @@ export default {
       formLabelWidth: '120px'
     }
   },
+  created() {
+    this.doQueryTableData()
+  },
   methods: {
+    doQueryTableData() {
+      this.listLoading = true
+      ticketListQueryApi().then(resp => {
+        this.tableData = resp.data
+        this.total = resp.data.length
+        this.listLoading = false
+      })
+    },
     doShowDetail() {
       this.$message('doShowDetail!')
       this.dialogFormVisible = true
@@ -131,7 +143,9 @@ export default {
         message: 'cancel!',
         type: 'warning'
       })
-    }
+    },
+    handleOpen() {},
+    handleClose() {}
   }
 }
 </script>
