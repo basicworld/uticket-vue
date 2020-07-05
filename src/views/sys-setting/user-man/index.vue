@@ -17,7 +17,7 @@
           <el-form-item>
             <el-button type="primary" @click="onSubmit">查询</el-button>
             <el-button @click="onSubmit">重置</el-button>
-            <el-button type="primary" @click="handlePopNewTkDialog">新建客户</el-button>
+            <el-button type="primary" @click="handlePopNewTkDialog">新增客户</el-button>
           </el-form-item>
         </el-form>
 
@@ -59,7 +59,7 @@
         <TicketDetail />
       </el-dialog>
       <el-dialog
-        title="新建客户"
+        title="新增客户"
         top="10vh"
         :visible.sync="newCusDialogVisible"
         modal-append-to-body="true"

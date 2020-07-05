@@ -17,7 +17,7 @@
           <el-form-item>
             <el-button type="primary" @click="onSubmit">查询</el-button>
             <el-button @click="onSubmit">重置</el-button>
-            <el-button type="primary" @click="handlePopNewTkDialog">新增客户</el-button>
+            <el-button type="primary" @click="handlePopNewRoleDialog">新增角色</el-button>
           </el-form-item>
         </el-form>
 
@@ -26,18 +26,13 @@
           size="small"
         >
           <el-table-column type="selection" width="45" />
-          <el-table-column prop="date" label="客户名称" width="200" />
-          <el-table-column prop="" label="等级" width="80" />
-          <el-table-column prop="" label="公司" width="80" />
-          <el-table-column prop="date" label="邮箱" width="140" />
-          <el-table-column prop="date" label="电话" width="120" />
-          <el-table-column prop="date" label="客户来源" width="120" />
-          <el-table-column prop="date" label="所在省" width="120" />
-          <el-table-column prop="date" label="最后登陆时间" width="120" />
-          <el-table-column fixed="right" label="操作" width="100">
+          <el-table-column prop="date" label="名称" />
+          <el-table-column prop="" label="描述" />
+          <el-table-column prop="date" label="创建时间" />
+          <el-table-column fixed="right" label="操作" width="200">
             <template slot-scope="scope">
-              <el-button type="text" size="small" @click="doShowDetail">查看</el-button>
               <el-button type="text" size="small">编辑</el-button>
+              <el-button type="text" size="small">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -59,12 +54,13 @@
         <TicketDetail />
       </el-dialog>
       <el-dialog
-        title="新增客户"
+        title="新增角色"
         top="10vh"
-        :visible.sync="newCusDialogVisible"
+        :visible.sync="roleEditDialogVisible"
         modal-append-to-body="true"
+        width="70%"
       >
-        <NewCustomer />
+        <RoleEdit />
       </el-dialog>
 
       </el-dialog></el-container>
@@ -74,9 +70,9 @@
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import TicketDetail from '@/views/tk-detail'
-import NewCustomer from '@/views/new-cus'
+import RoleEdit from './components/RoleEdit'
 export default {
-  components: { Pagination, TicketDetail, NewCustomer },
+  components: { Pagination, TicketDetail, RoleEdit },
   data() {
     const item = {
       date: '2016-05-02',
@@ -84,7 +80,7 @@ export default {
       address: '上海市普陀区金沙江路 1518 弄'
     }
     return {
-      newCusDialogVisible: false,
+      roleEditDialogVisible: false,
       total: 0,
       listLoading: true,
       listQuery: {
@@ -111,8 +107,8 @@ export default {
     }
   },
   methods: {
-    handlePopNewTkDialog() {
-      this.newCusDialogVisible = true
+    handlePopNewRoleDialog() {
+      this.roleEditDialogVisible = true
     },
     doShowDetail() {
       this.$message('doShowDetail!')
