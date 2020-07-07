@@ -1,7 +1,7 @@
 const Mock = require('mockjs')
 
-const ticketDetailData = Mock.mock({
-  'items|20': [{
+const mockData = Mock.mock({
+  'ticketItems|20': [{
     'id': 1,
     'fieldNum': '#1',
     'subject': '@csentence( 8, 20)',
@@ -100,7 +100,7 @@ module.exports = [
     url: '/ticket/list',
     type: 'post',
     response: config => {
-      const list = ticketDetailData.items
+      const list = mockData.ticketItems
       return {
         'code': 20000,
         'message': 'success',
@@ -113,7 +113,7 @@ module.exports = [
     url: '/ticket/detail',
     type: 'post',
     response: config => {
-      const detail = ticketDetailData[0]
+      const detail = mockData.ticketItems[0]
       return {
         'code': 20000,
         'message': 'success',

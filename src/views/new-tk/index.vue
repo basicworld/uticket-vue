@@ -2,10 +2,10 @@
   <div class="app-container">
     <el-form ref="form" :model="form" label-width="120px" size="small">
       <el-form-item label="主题">
-        <el-input v-model="form.name" />
+        <el-input v-model="form.subject" />
       </el-form-item>
       <el-form-item label="描述">
-        <el-input v-model="form.desc" type="textarea" />
+        <el-input v-model="form.content" type="textarea" />
       </el-form-item>
       <el-form-item label="上传附件">
         <el-upload
@@ -110,14 +110,19 @@ export default {
     return {
       fileList: [{ name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' }, { name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' }],
       form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
+        subject: '', // subject	字符串	是	标题	最大长度255个字符
+        content: '', // content	字符串	是	内容
+        type: '', // type	字符串	否	查找客户时使用的类型
+        typeContent: '', // type_content	字符串	否	与类型type对应的值	最大长度255个字符
+        priority: '', // priority	字符串	否	优先级中文名称， 默认为标准
+        assigneeEmail: '', // assignee_email	字符串	否	受理客服邮箱	最大长度255个字符
+        agentGroupName: '', // agent_group_name	字符串	否	受理客服组名称	最大长度255个字符
+        templateId: undefined, // template_id	整型	否	工单模板id,无传入值或传入错误值则使用默认模板
+        followerIds: '', // follower_ids	数组	否	工单关注人,如[1,2,3],数组内是客服id
+        tags: '', // tags	字符串	否	工单标签,如"标签1,标签2",字符串内是标签名字,用逗号隔开
+        status: '', // status	字符串	否	状态中文名称，默认为开启
+        ticketField: undefined, // ticket_field	对象	否	自定义字段，详见下文
+        creatorEmail: ''// creator_email	字符串	否	工单创建人邮箱	最大长度255个字符
       }
     }
   },

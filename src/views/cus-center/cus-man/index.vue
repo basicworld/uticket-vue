@@ -26,14 +26,13 @@
           size="small"
         >
           <el-table-column type="selection" width="45" />
-          <el-table-column prop="date" label="客户名称" width="200" />
-          <el-table-column prop="" label="等级" width="80" />
-          <el-table-column prop="" label="公司" width="80" />
-          <el-table-column prop="date" label="邮箱" width="140" />
-          <el-table-column prop="date" label="电话" width="120" />
-          <el-table-column prop="date" label="客户来源" width="120" />
-          <el-table-column prop="date" label="所在省" width="120" />
-          <el-table-column prop="date" label="最后登陆时间" width="120" />
+          <el-table-column prop="nickName" label="客户名称" width="100" />
+          <el-table-column prop="level" label="等级" width="80" />
+          <el-table-column prop="companyName" label="公司" width="140" show-overflow-tooltip />
+          <el-table-column prop="email" label="邮箱" width="160" show-overflow-tooltip />
+          <el-table-column prop="cellphone" label="电话" width="120" />
+          <el-table-column prop="sourceChannel" label="客户来源" width="100" />
+          <el-table-column prop="lastContactAt" label="最后联系时间" width="140" />
           <el-table-column fixed="right" label="操作" width="100">
             <template slot-scope="scope">
               <el-button type="text" size="small" @click="doShowDetail">查看</el-button>
@@ -46,15 +45,15 @@
           :total="total"
           :page.sync="listQuery.page"
           :limit.sync="listQuery.limit"
-          @pagination="getData"
+          @pagination="doQueryTableData"
         />
       </el-main>
 
       <el-dialog
         title="工单详情"
         :visible.sync="dialogFormVisible"
-        fullscreen="true"
-        modal-append-to-body="true"
+        fullscreen
+        modal-append-to-body
       >
         <TicketDetail />
       </el-dialog>
@@ -62,9 +61,9 @@
         title="新增客户"
         top="10vh"
         :visible.sync="newCusDialogVisible"
-        modal-append-to-body="true"
+        modal-append-to-body
       >
-        <NewCustomer />
+        <NewCustomer @handleHideNewTkDialog="handleHideNewTkDialog" />
       </el-dialog>
 
       </el-dialog></el-container>
@@ -75,14 +74,11 @@
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import TicketDetail from '@/views/tk-detail'
 import NewCustomer from '@/views/new-cus'
+import { customerListQueryApi } from '@/api/customer'
+
 export default {
   components: { Pagination, TicketDetail, NewCustomer },
   data() {
-    const item = {
-      date: '2016-05-02',
-      name: '王小虎',
-      address: '上海市普陀区金沙江路 1518 弄'
-    }
     return {
       newCusDialogVisible: false,
       total: 0,
@@ -95,7 +91,7 @@ export default {
         user: '',
         region: ''
       },
-      tableData: Array(10).fill(item),
+      tableData: [],
       dialogFormVisible: false,
       form: {
         name: '',
@@ -110,9 +106,23 @@ export default {
       formLabelWidth: '120px'
     }
   },
+  mounted() {
+    this.doQueryTableData()
+  },
   methods: {
+    doQueryTableData() {
+      this.listLoading = true
+      customerListQueryApi().then(resp => {
+        this.tableData = resp.data
+        this.total = resp.data.length
+        this.listLoading = false
+      })
+    },
     handlePopNewTkDialog() {
       this.newCusDialogVisible = true
+    },
+    handleHideNewTkDialog() {
+      this.newCusDialogVisible = false
     },
     doShowDetail() {
       this.$message('doShowDetail!')
