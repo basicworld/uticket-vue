@@ -29,11 +29,36 @@
 </template>
 
 <script>
-import { customerCreateApi } from '@/api/customer'
+import { customerCreateApi, customerUpdateApi } from '@/api/customer'
 import { validCellphone } from '@/utils/validate'
 
 export default {
   name: 'NewCustomer',
+  props: {
+    // 类型：new--新增客户  edit--更新客户
+    showTypeDto: {
+      type: String,
+      required: true,
+      default() {
+        return 'new'
+      }
+    },
+    formDto: {
+      type: Object,
+      required: false,
+      default() {
+        return {
+          nickName: '',
+          cellphone: '', // 手机号
+          email: '', // 邮箱
+          companyName: '',
+          description: '',
+          tags: ''
+        }
+      }
+    }
+  },
+
   data() {
     var checkPhone = (rule, value, callback) => {
       if (!value) {
@@ -54,6 +79,8 @@ export default {
       }
     }
     return {
+
+      // 表单数据
       form: {
         nickName: '',
         cellphone: '', // 手机号
@@ -62,6 +89,7 @@ export default {
         description: '',
         tags: ''
       },
+      // 表单验证规则
       rules: {
         nickName: [
           { required: true, message: '姓名为必填项', trigger: 'blur' },
@@ -87,15 +115,31 @@ export default {
       }
     }
   },
+  watch: {
+    formDto: {
+      deep: true,
+      handler(val) {
+        this.form = Object.assign({}, val)
+      }
+    }
+  },
   mounted() {
-    this.onCancel('form')
+    this.$nextTick(() => {
+      this.onCancel('form')
+      this.form = Object.assign({}, this.formDto)
+    })
   },
   methods: {
     onSubmit(formName) {
+      var choosedApi = () => {}
+      if (this.showTypeDto === 'edit') { // edit
+        choosedApi = customerUpdateApi
+      } else { // new
+        choosedApi = customerCreateApi
+      }
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
-          customerCreateApi(this.form).then(res => {
+          choosedApi(this.form).then(res => {
             if (res.code === 20000) {
               this.$message(res.message)
               this.$emit('handleHideNewTkDialog')

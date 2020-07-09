@@ -15,8 +15,8 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="onSubmit">查询</el-button>
-            <el-button @click="onSubmit">重置</el-button>
+            <el-button type="primary" @click="doQueryTableData">查询</el-button>
+            <el-button @click="doQueryTableData">重置</el-button>
             <el-button type="primary" @click="handlePopNewTkDialog">新增客户</el-button>
           </el-form-item>
         </el-form>
@@ -26,17 +26,16 @@
           size="small"
         >
           <el-table-column type="selection" width="45" />
-          <el-table-column prop="nickName" label="客户名称" width="100" />
-          <el-table-column prop="level" label="等级" width="80" />
-          <el-table-column prop="companyName" label="公司" width="140" show-overflow-tooltip />
-          <el-table-column prop="email" label="邮箱" width="160" show-overflow-tooltip />
-          <el-table-column prop="cellphone" label="电话" width="120" />
-          <el-table-column prop="sourceChannel" label="客户来源" width="100" />
+          <el-table-column prop="nickName" label="客户名称" />
+          <el-table-column prop="level" label="等级" />
+          <el-table-column prop="companyName" label="公司" show-overflow-tooltip />
+          <el-table-column prop="email" label="邮箱" show-overflow-tooltip />
+          <el-table-column prop="cellphone" label="电话" />
+          <el-table-column prop="sourceChannel" label="客户来源" />
           <el-table-column prop="lastContactAt" label="最后联系时间" width="140" />
           <el-table-column fixed="right" label="操作" width="100">
             <template slot-scope="scope">
-              <el-button type="text" size="small" @click="doShowDetail">查看</el-button>
-              <el-button type="text" size="small">编辑</el-button>
+              <el-button type="text" size="small" @click="doEditCustomer(scope.row)">编辑</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -63,7 +62,15 @@
         :visible.sync="newCusDialogVisible"
         modal-append-to-body
       >
-        <NewCustomer @handleHideNewTkDialog="handleHideNewTkDialog" />
+        <NewCustomer :show-type-dto="cusDialogShowType" @handleHideNewTkDialog="handleHideNewTkDialog" />
+      </el-dialog>
+      <el-dialog
+        title="编辑客户"
+        top="10vh"
+        :visible.sync="editCusDialogVisible"
+        modal-append-to-body
+      >
+        <NewCustomer :show-type-dto="cusDialogShowType" :form-dto="customerData" @handleHideNewTkDialog="handleHideEditTkDialog" />
       </el-dialog>
 
       </el-dialog></el-container>
@@ -76,11 +83,14 @@ import TicketDetail from '@/views/tk-detail'
 import NewCustomer from '@/views/new-cus'
 import { customerListQueryApi } from '@/api/customer'
 
+const customerData = {}
 export default {
   components: { Pagination, TicketDetail, NewCustomer },
   data() {
     return {
       newCusDialogVisible: false,
+      editCusDialogVisible: false,
+      cusDialogShowType: 'new',
       total: 0,
       listLoading: true,
       listQuery: {
@@ -103,9 +113,11 @@ export default {
         resource: '',
         desc: ''
       },
+      customerData: customerData,
       formLabelWidth: '120px'
     }
   },
+
   mounted() {
     this.doQueryTableData()
   },
@@ -119,14 +131,23 @@ export default {
       })
     },
     handlePopNewTkDialog() {
+      this.cusDialogShowType = 'new'
       this.newCusDialogVisible = true
     },
     handleHideNewTkDialog() {
       this.newCusDialogVisible = false
     },
+    handleHideEditTkDialog() {
+      this.editCusDialogVisible = false
+    },
     doShowDetail() {
       this.$message('doShowDetail!')
       this.dialogFormVisible = true
+    },
+    doEditCustomer(subject) {
+      this.cusDialogShowType = 'edit'
+      this.customerData = subject //  Object.assign({}, subject)
+      this.editCusDialogVisible = true
     },
     onSubmit() {
       this.$message('submit!')

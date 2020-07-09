@@ -17,7 +17,7 @@ const mockData = Mock.mock({
     'isBlocked': false,
     'webToken': 'dcc79435-e9e2-436a-9cdf-c9f13f728923',
     'sdkToken': 'b0bf5c37-ebdd-4539-a961-7941aca02e4c',
-    'tags': [],
+    'tags': '有钱,任性',
     'richTags': [
       {
         'id': 1,
