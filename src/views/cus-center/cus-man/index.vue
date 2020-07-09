@@ -73,7 +73,7 @@
         <NewCustomer :show-type-dto="cusDialogShowType" :form-dto="customerData" @handleHideNewTkDialog="handleHideEditTkDialog" />
       </el-dialog>
 
-      </el-dialog></el-container>
+    </el-container>
   </el-container>
 </template>
 

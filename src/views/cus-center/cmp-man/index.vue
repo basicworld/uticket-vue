@@ -50,21 +50,31 @@
       <el-dialog
         title="工单详情"
         :visible.sync="dialogFormVisible"
-        fullscreen="true"
-        modal-append-to-body="true"
+        fullscreen
+        modal-append-to-body
       >
         <TicketDetail />
       </el-dialog>
       <el-dialog
         title="新增公司"
         top="10vh"
-        :visible.sync="newCusDialogVisible"
-        modal-append-to-body="true"
+        :visible.sync="newCompanyDialogVisible"
+        modal-append-to-body
       >
         <NewCompany />
+
+      </el-dialog>
+      <el-dialog
+        title="编辑公司"
+        top="10vh"
+        :visible.sync="editCompanyDialogVisible"
+        modal-append-to-body
+      >
+        <NewCompany />
+
       </el-dialog>
 
-      </el-dialog></el-container>
+    </el-container>
   </el-container>
 </template>
 
@@ -72,16 +82,14 @@
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import TicketDetail from '@/views/tk-detail'
 import NewCompany from '@/views/new-cmp'
+import { companyListQueryApi } from '@/api/company'
+
 export default {
   components: { Pagination, TicketDetail, NewCompany },
   data() {
-    const item = {
-      date: '2016-05-02',
-      name: '王小虎',
-      address: '上海市普陀区金沙江路 1518 弄'
-    }
     return {
-      newCusDialogVisible: false,
+      newCompanyDialogVisible: false,
+      editCompanyDialogVisible: false,
       total: 0,
       listLoading: true,
       listQuery: {
@@ -92,7 +100,7 @@ export default {
         user: '',
         region: ''
       },
-      tableData: Array(10).fill(item),
+      tableData: [],
       dialogFormVisible: false,
       form: {
         name: '',
@@ -109,11 +117,19 @@ export default {
   },
   methods: {
     handlePopNewTkDialog() {
-      this.newCusDialogVisible = true
+      this.newCompanyDialogVisible = true
     },
     doShowDetail() {
       this.$message('doShowDetail!')
       this.dialogFormVisible = true
+    },
+    getData() {
+      this.listLoading = true
+      companyListQueryApi().then(resp => {
+        this.tableData = resp.data
+        this.total = resp.data.length
+        this.listLoading = false
+      })
     },
     onSubmit() {
       this.$message('submit!')
