@@ -58,6 +58,17 @@ const mockData = Mock.mock({
 
 module.exports = [
 
+  // update客户
+  {
+    url: '/customer/update',
+    type: 'post',
+    response: config => {
+      return {
+        'code': 20000,
+        'message': 'success'
+      }
+    }
+  },
   // 新增客户
   {
     url: '/customer/create',

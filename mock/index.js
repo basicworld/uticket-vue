@@ -5,11 +5,13 @@ const user = require('./user')
 const table = require('./table')
 const ticket = require('./ticket')
 const customer = require('./customer')
+const company = require('./company')
 
 const mocks = [
   ...user,
   ...ticket,
   ...customer,
+  ...company,
   ...table
 ]
 

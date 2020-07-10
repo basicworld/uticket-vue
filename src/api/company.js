@@ -11,6 +11,17 @@ export function companyListQueryApi(data) {
     data
   })
 }
+/**
+ * 获取公司列表建议
+ * @param {*} data
+ */
+export function companySuggestQueryApi(data) {
+  return request({
+    url: '/company/suggest',
+    method: 'post',
+    data
+  })
+}
 
 /**
  * 公司详情

@@ -1,67 +1,129 @@
 <template>
   <div class="app-container">
-    <el-form ref="form" :model="form" label-width="100px" size="small">
-      <el-form-item label="公司名称">
+    <el-form ref="form" :rules="rules" :model="form" label-width="80px" size="small">
+      <el-form-item label="公司名称" prop="name">
         <el-input v-model="form.name" />
       </el-form-item>
-      <el-form-item label="公司描述">
-        <el-input v-model="form.desc" type="textarea" />
+      <el-form-item label="公司描述" prop="description">
+        <el-input v-model="form.description" type="textarea" />
       </el-form-item>
-      <el-form-item label="公司地址">
-        <el-input v-model="form.name" />
+      <el-form-item label="公司地址" prop="address">
+        <el-input v-model="form.address" />
       </el-form-item>
-      <el-form-item label="公司域名">
-        <el-input v-model="form.name" />
+      <el-form-item label="公司域名" prop="domains">
+        <el-input v-model="form.domains" />
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">保存</el-button>
-        <el-button @click="onCancel">重置</el-button>
+        <el-button type="primary" @click="onSubmit('form')">保存</el-button>
+        <el-button @click="onCancel('form')">重置</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
+import { companyCreateApi, companyUpdateApi } from '@/api/company'
+
 export default {
   name: 'NewCompany',
-  data() {
-    return {
-      fileList: [{ name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' }, { name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' }],
-      form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
+  props: {
+    // 类型：new--新增公司  edit--更新公司
+    showType: {
+      type: String,
+      required: true,
+      default() {
+        return 'new'
+      }
+    },
+    formDto: {
+      type: Object,
+      required: false,
+      default() {
+        return {
+          name: '',
+          description: '',
+          domains: '',
+          address: ''
+        }
       }
     }
   },
+  data() {
+    return {
+      form: {
+        name: '',
+        description: '',
+        domains: '',
+        address: ''
+
+      },
+      rules: {
+        name: [
+          { required: true, message: '公司名称为必填项', trigger: 'blur' },
+          { min: 2, max: 50, message: '公司名称长度限制为 2 到 50 个字符', trigger: 'blur' }
+        ],
+        description: [
+          { max: 100, message: '长度不超过 100 个字符', trigger: 'blur' }
+
+        ],
+        domains: [
+          { max: 100, message: '长度不超过 100 个字符', trigger: 'blur' }
+
+        ],
+        address: [
+          { max: 100, message: '长度不超过 100 个字符', trigger: 'blur' }
+
+        ]
+      }
+    }
+  },
+  watch: {
+    formDto: {
+      deep: true,
+      handler(val) {
+        this.form = Object.assign({}, val)
+      }
+    }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.onCancel('form')
+      this.form = Object.assign({}, this.formDto)
+    })
+  },
   methods: {
-    onSubmit() {
-      this.$message('submit!')
-    },
-    onCancel() {
-      this.$message({
-        message: 'cancel!',
-        type: 'warning'
+    onSubmit(formName) {
+      // 根据showType选择不同的提交方法
+      var choosedApi = () => {}
+      if (this.showType === 'edit') { // edit
+        choosedApi = companyUpdateApi
+      } else { // new
+        choosedApi = companyCreateApi
+      }
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          choosedApi(this.form).then(res => {
+            if (res.code === 20000) {
+              this.$message(res.message)
+              this.$emit('handleHideNewTkDialog')
+              this.onCancel(formName)
+            } else {
+              this.$message.warning(res.message)
+            }
+          }).catch(() => {
+            console.log('new-cus.vue onSubmit companyCreateApi error!')
+          })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
       })
     },
-    handleRemove(file, fileList) {
-      console.log(file, fileList)
-    },
-    handlePreview(file) {
-      console.log(file)
-    },
-    handleExceed(files, fileList) {
-      this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
-    },
-    beforeRemove(file, fileList) {
-      return this.$confirm(`确定移除 ${file.name}？`)
+    onCancel(formName) {
+      this.$refs[formName].resetFields()
     }
+
   }
 }
 </script>

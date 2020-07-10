@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form ref="form" :rules="rules" :model="form" label-width="60px" size="small">
+    <el-form ref="form" :rules="rules" :model="form" label-width="50px" size="small">
       <el-form-item label="姓名" prop="nickName">
         <el-input v-model="form.nickName" />
       </el-form-item>
@@ -11,7 +11,22 @@
         <el-input v-model="form.email" />
       </el-form-item>
       <el-form-item label="公司" prop="companyName">
-        <el-input v-model="form.companyName" />
+        <el-select
+          v-model="form.companyName"
+          filterable
+          remote
+          placeholder="输入名称搜索"
+          :remote-method="companyRemoteSearch"
+          :loading="companySearchLoading"
+          style="width: 100%;"
+        >
+          <el-option
+            v-for="item in companyOptions"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="标签" prop="tags">
         <el-input v-model="form.tags" />
@@ -30,6 +45,7 @@
 
 <script>
 import { customerCreateApi, customerUpdateApi } from '@/api/customer'
+import { companySuggestQueryApi } from '@/api/company'
 import { validCellphone } from '@/utils/validate'
 
 export default {
@@ -79,7 +95,8 @@ export default {
       }
     }
     return {
-
+      companySearchLoading: false,
+      companyOptions: [],
       // 表单数据
       form: {
         nickName: '',
@@ -130,7 +147,27 @@ export default {
     })
   },
   methods: {
+    // 远程搜索机构
+    companyRemoteSearch(query) {
+      if (query !== '') {
+        this.companySearchLoading = true
+        setTimeout(() => {
+          companySuggestQueryApi().then(res => {
+            if (res.code === 20000) {
+              this.companyOptions = res.data
+            }
+            this.companySearchLoading = false
+          }).catch(() => {
+            this.$message.error('远程搜索机构错误')
+          })
+        }, 200)
+      } else {
+        this.companyOptions = []
+      }
+    },
+    // 保存
     onSubmit(formName) {
+      // 根据showType选择不同的提交方法
       var choosedApi = () => {}
       if (this.showTypeDto === 'edit') { // edit
         choosedApi = customerUpdateApi
@@ -148,10 +185,10 @@ export default {
               this.$message.warning(res.message)
             }
           }).catch(() => {
-            console.log('new-cus.vue onSubmit customerCreateApi error!')
+            this.$message.error('保存出错')
           })
         } else {
-          console.log('error submit!!')
+          console.log('表单校验出错，不能保存')
           return false
         }
       })
