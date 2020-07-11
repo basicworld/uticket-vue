@@ -49,7 +49,7 @@ import { companySuggestQueryApi } from '@/api/company'
 import { validCellphone } from '@/utils/validate'
 
 export default {
-  name: 'NewCustomer',
+  name: 'CustomerForm',
   props: {
     // 类型：new--新增客户  edit--更新客户
     showTypeDto: {
@@ -59,6 +59,7 @@ export default {
         return 'new'
       }
     },
+    // 表单数据，用于编辑customer
     formDto: {
       type: Object,
       required: false,
@@ -76,6 +77,7 @@ export default {
   },
 
   data() {
+    // 表单校验：手机号校验
     var checkPhone = (rule, value, callback) => {
       if (!value) {
         callback()
@@ -87,6 +89,7 @@ export default {
         }
       }
     }
+    // 表单校验：手机号和邮箱至少输入一个
     var requirePhoneOrEmail = (rule, value, callback) => {
       if ((!this.form.cellphone) && (!this.form.email)) {
         callback(new Error('手机和邮箱至少填写一个'))
@@ -95,9 +98,11 @@ export default {
       }
     }
     return {
+      // 远程搜索company的动画效果
       companySearchLoading: false,
+      // 远程搜索到的company list
       companyOptions: [],
-      // 表单数据
+      // customer表单数据
       form: {
         nickName: '',
         cellphone: '', // 手机号
@@ -165,7 +170,7 @@ export default {
         this.companyOptions = []
       }
     },
-    // 保存
+    // 保存customer
     onSubmit(formName) {
       // 根据showType选择不同的提交方法
       var choosedApi = () => {}
@@ -178,11 +183,11 @@ export default {
         if (valid) {
           choosedApi(this.form).then(res => {
             if (res.code === 20000) {
-              this.$message(res.message)
-              this.$emit('handleHideNewTkDialog')
+              this.$message.success(res.message)
+              this.$emit('handleHideCustomerForm')
               this.onCancel(formName)
             } else {
-              this.$message.warning(res.message)
+              this.$message.error(res.message)
             }
           }).catch(() => {
             this.$message.error('保存出错')
@@ -193,6 +198,7 @@ export default {
         }
       })
     },
+    // 重置表单数据
     onCancel(formName) {
       this.$refs[formName].resetFields()
     }
@@ -201,8 +207,5 @@ export default {
 </script>
 
 <style scoped>
-.line{
-  text-align: center;
-}
 </style>
 

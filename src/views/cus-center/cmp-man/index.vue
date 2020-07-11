@@ -1,76 +1,69 @@
 <template>
   <el-container style="height: 100vh; border: 1px solid #eee">
 
-    <el-container>
+    <el-main>
+      <el-form ref="searchForm" :inline="true" :model="listQuery" class="demo-form-inline" size="small">
+        <el-form-item label="公司名称">
+          <el-input v-model="listQuery.name" placeholder="按公司名称查询" />
+        </el-form-item>
 
-      <el-main>
-        <el-form ref="searchForm" :inline="true" :model="listQuery" class="demo-form-inline" size="small">
-          <el-form-item label="公司名称">
-            <el-input v-model="listQuery.name" />
-          </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="doQuery">查询</el-button>
+          <el-button @click="onCancel">重置</el-button>
+          <el-button type="primary" @click="handlePopNewCompanyDialog">新增公司</el-button>
+        </el-form-item>
+      </el-form>
 
-          <el-form-item>
-            <el-button type="primary" @click="doQuery">查询</el-button>
-            <el-button @click="onCancel">重置</el-button>
-            <el-button type="primary" @click="handlePopNewCompanyDialog">新增公司</el-button>
-          </el-form-item>
-        </el-form>
-
-        <el-table
-          :data="tableData"
-          size="small"
-        >
-          <el-table-column type="selection" width="45" />
-          <el-table-column prop="name" label="公司名称" />
-          <el-table-column prop="description" label="描述" />
-          <el-table-column prop="address" label="公司地址" />
-          <el-table-column prop="domains" label="公司域名" />
-          <el-table-column prop="updatedAt" label="更新时间" />
-          <el-table-column fixed="right" label="操作" width="100">
-            <template slot-scope="scope">
-              <el-button type="text" size="small" @click="handleShowEditDialog(scope.row)">编辑</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-        <pagination
-          v-show="total >= 0"
-          :total="total"
-          :page.sync="listQuery.page"
-          :limit.sync="listQuery.limit"
-          @pagination="doQuery"
-        />
-      </el-main>
-
-      <el-dialog
-        title="新增公司"
-        top="10vh"
-        :visible.sync="newCompanyDialogVisible"
-        modal-append-to-body
+      <el-table
+        :data="tableData"
+        size="small"
       >
-        <NewCompany :show-type="companyDialogShowType" />
+        <el-table-column type="selection" width="45" />
+        <el-table-column prop="name" label="公司名称" />
+        <el-table-column prop="description" label="描述" />
+        <el-table-column prop="address" label="公司地址" />
+        <el-table-column prop="domains" label="公司域名" />
+        <el-table-column prop="updatedAt" label="更新时间" />
+        <el-table-column fixed="right" label="操作" width="100">
+          <template slot-scope="scope">
+            <el-button type="text" size="small" @click="handleShowEditDialog(scope.row)">编辑</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <pagination
+        v-show="total >= 0"
+        :total="total"
+        :page.sync="listQuery.page"
+        :limit.sync="listQuery.limit"
+        @pagination="doQuery"
+      />
+    </el-main>
 
-      </el-dialog>
-      <el-dialog
-        title="编辑公司"
-        top="10vh"
-        :visible.sync="editCompanyDialogVisible"
-        modal-append-to-body
-      >
-        <NewCompany :show-type="companyDialogShowType" :form-dto="formDto" />
+    <el-dialog
+      title="新增公司"
+      top="10vh"
+      :visible.sync="newCompanyDialogVisible"
+    >
+      <CompanyForm :show-type="companyDialogShowType" @handleHideCompanyForm="newCompanyDialogVisible=false" />
+    </el-dialog>
+    <el-dialog
+      title="编辑公司"
+      top="10vh"
+      :visible.sync="editCompanyDialogVisible"
+    >
+      <CompanyForm :show-type="companyDialogShowType" :form-dto="formDto" @handleHideCompanyForm="editCompanyDialogVisible=false" />
+    </el-dialog>
 
-      </el-dialog>
-
-    </el-container>
   </el-container>
 </template>
 
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import NewCompany from '@/views/new-cmp'
+import CompanyForm from './components/CompanyForm'
 import { companyListQueryApi } from '@/api/company'
 
 export default {
-  components: { Pagination, NewCompany },
+  components: { Pagination, CompanyForm },
   data() {
     return {
       companyDialogShowType: 'new',
@@ -78,25 +71,16 @@ export default {
       editCompanyDialogVisible: false,
       total: 0,
       listLoading: true,
+      // 筛选公司
       listQuery: {
         page: 1,
         limit: 10,
         name: ''
       },
-
+      // company table data list
       tableData: [],
-      form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
-      },
-      formDto: {},
-      formLabelWidth: '120px'
+      // 调用companyform子组件的prop
+      formDto: {}
     }
   },
   mounted() {
@@ -112,7 +96,7 @@ export default {
       this.companyDialogShowType = 'new'
       this.newCompanyDialogVisible = true
     },
-
+    // 查询公司列表
     doQuery() {
       this.listLoading = true
       companyListQueryApi().then(resp => {
@@ -121,7 +105,7 @@ export default {
         this.listLoading = false
       })
     },
-
+    // 重置查询条件
     onCancel() {
       this.listQuery.name = ''
     }

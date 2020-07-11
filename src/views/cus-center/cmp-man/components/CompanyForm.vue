@@ -26,7 +26,7 @@
 import { companyCreateApi, companyUpdateApi } from '@/api/company'
 
 export default {
-  name: 'NewCompany',
+  name: 'CompanyForm',
   props: {
     // 类型：new--新增公司  edit--更新公司
     showType: {
@@ -36,6 +36,7 @@ export default {
         return 'new'
       }
     },
+    // 父组建传入的表单数据
     formDto: {
       type: Object,
       required: false,
@@ -51,6 +52,7 @@ export default {
   },
   data() {
     return {
+      // 表单数据
       form: {
         name: '',
         description: '',
@@ -58,6 +60,7 @@ export default {
         address: ''
 
       },
+      // 表单校验规则
       rules: {
         name: [
           { required: true, message: '公司名称为必填项', trigger: 'blur' },
@@ -79,6 +82,7 @@ export default {
     }
   },
   watch: {
+    // 父组建传入的表单数据
     formDto: {
       deep: true,
       handler(val) {
@@ -93,6 +97,7 @@ export default {
     })
   },
   methods: {
+    // 保存
     onSubmit(formName) {
       // 根据showType选择不同的提交方法
       var choosedApi = () => {}
@@ -105,21 +110,22 @@ export default {
         if (valid) {
           choosedApi(this.form).then(res => {
             if (res.code === 20000) {
-              this.$message(res.message)
-              this.$emit('handleHideNewTkDialog')
+              this.$message.success(res.message)
               this.onCancel(formName)
+              this.$emit('handleHideCompanyForm')
             } else {
               this.$message.warning(res.message)
             }
           }).catch(() => {
-            console.log('new-cus.vue onSubmit companyCreateApi error!')
+            this.$message.error('公司信息保存失败')
           })
         } else {
-          console.log('error submit!!')
+          console.log('公司表单校验失败，不能保存')
           return false
         }
       })
     },
+    // 重置表单
     onCancel(formName) {
       this.$refs[formName].resetFields()
     }
