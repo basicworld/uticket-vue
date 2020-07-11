@@ -11,6 +11,17 @@ export function customerListQueryApi(data) {
     data
   })
 }
+/**
+ * 获取建议客户列表
+ *
+ */
+export function customerSuggestQueryApi(data) {
+  return request({
+    url: '/customer/suggest',
+    method: 'post',
+    data
+  })
+}
 
 /**
  * 获取客户详情

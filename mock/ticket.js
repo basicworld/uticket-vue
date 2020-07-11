@@ -120,5 +120,18 @@ module.exports = [
         'data': detail
       }
     }
+  },
+  // 上传附件
+  {
+    url: '/ticket/file/upload',
+    type: 'post',
+    response: config => {
+      const detail = mockData.ticketItems[0]
+      return {
+        'code': 20000,
+        'message': 'success',
+        'data': detail
+      }
+    }
   }
 ]

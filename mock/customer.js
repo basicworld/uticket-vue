@@ -18,6 +18,12 @@ const mockData = Mock.mock({
     'otherEmails': [], // 其他邮箱，暂不启用
     'otherCellphones': [], // 其他手机号，暂不启用
     'sourceChannel': '手动创建' // 客户来源中文名称
+  }],
+  'customerSuggestItems|5': [{
+    'id': '@id', // id
+    'nickName': '@cname', // 姓名
+    'email': '@email', // 邮箱
+    'cellphone': /(135|136|180|185|156|189)\d{8}/ // 手机号
   }]
 })
 
@@ -62,6 +68,19 @@ module.exports = [
     type: 'post',
     response: config => {
       const list = mockData.customerItems
+      return {
+        'code': 20000,
+        'message': 'success',
+        'data': list
+      }
+    }
+  },
+  // 客户suggest列表
+  {
+    url: '/customer/suggest',
+    type: 'post',
+    response: config => {
+      const list = mockData.customerSuggestItems
       return {
         'code': 20000,
         'message': 'success',

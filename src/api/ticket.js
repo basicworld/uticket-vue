@@ -59,3 +59,14 @@ export function ticketListQueryApi(data) {
     data
   })
 }
+/**
+ * 上传附件
+ * @param  data
+ */
+export function ticketFileUploadApi(data) {
+  return request({
+    url: '/ticket/file/upload',
+    method: 'post',
+    data
+  })
+}

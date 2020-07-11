@@ -34,6 +34,17 @@ export function userListQueryApi(data) {
     data
   })
 }
+/**
+ * 获取用户suggest列表
+ * @param {*} data
+ */
+export function userSuggestQueryApi(data) {
+  return request({
+    url: '/user/suggest',
+    method: 'post',
+    data
+  })
+}
 
 /**
  * 获取用户详情
