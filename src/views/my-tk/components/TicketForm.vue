@@ -19,18 +19,17 @@
 
       <el-form-item label="上传附件">
         <el-upload
-          class="upload-demo"
-          action="https://jsonplaceholder.typicode.com/posts/"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :before-remove="beforeRemove"
-          multiple
           :limit="3"
-          :on-exceed="handleExceed"
+          :action="ticketFileUploadUrl"
+          :before-upload="beforeFileUpload"
+          :on-exceed="handleFileExceed"
+          :on-success="handleFileUploadSuccess"
+          :on-preview="handleFilePreview"
+          :before-remove="beforeFileRemove"
+          :on-remove="handleFileRemove"
           :file-list="fileList"
         >
           <el-button size="small" type="primary">点击上传</el-button>
-          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
         </el-upload>
       </el-form-item>
       <el-form-item label="客户">
@@ -114,15 +113,18 @@
 <script>
 import { customerSuggestQueryApi } from '@/api/customer'
 import { userSuggestQueryApi } from '@/api/user'
+import { fileUploadUrl } from '@/api/ticket'
 export default {
   name: 'TicketForm',
   data() {
     return {
+      ticketFileUploadUrl: fileUploadUrl(),
       customerSearchLoading: false,
       customerOptions: [],
       userSearchLoading: false,
       userOptions: [],
-      fileList: [{ name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' }, { name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' }],
+      // 文件列表，格式：{ name: 'food.jpeg', url: 'https://1' }
+      fileList: [],
       form: {
         subject: '', // subject	字符串	是	标题	最大长度255个字符
         content: '', // content	字符串	是	内容
@@ -193,26 +195,40 @@ export default {
         this.userOptions = []
       }
     },
+    // 保存工单
     onSubmit() {
       this.$message('submit!')
     },
+    // 重置工单表单
     onCancel() {
       this.$message({
         message: 'cancel!',
         type: 'warning'
       })
     },
-    handleRemove(file, fileList) {
-      console.log(file, fileList)
-    },
-    handlePreview(file) {
-      console.log(file)
-    },
-    handleExceed(files, fileList) {
+    // 附件个数超出限制
+    handleFileExceed(files, fileList) {
       this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
     },
-    beforeRemove(file, fileList) {
+    // 附件删除前的确认
+    beforeFileRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`)
+    },
+    // 文件上传前检查
+    beforeFileUpload(file) {
+      if (file.size > 10 * 1024 * 1024) {
+        this.$message.error('文件大小超过10M!')
+        return false
+      }
+    },
+    handleFilePreview(file) {
+      console.log('handleFilePreview')
+    },
+    handleFileRemove(file, fileList) {
+      console.log('handleFileRemove', fileList)
+    },
+    handleFileUploadSuccess(response, file, fileList) {
+      console.log('handleFileUploadSuccess', fileList)
     }
   }
 }

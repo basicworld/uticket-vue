@@ -59,13 +59,18 @@ export function ticketListQueryApi(data) {
     data
   })
 }
+// 文件上传url
+export const fileUploadUrl = () => {
+  // return '/ticket/file/upload'
+  return 'https://jsonplaceholder.typicode.com/posts/'
+}
 /**
  * 上传附件
  * @param  data
  */
 export function ticketFileUploadApi(data) {
   return request({
-    url: '/ticket/file/upload',
+    url: fileUploadUrl(),
     method: 'post',
     data
   })

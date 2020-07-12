@@ -50,33 +50,14 @@
         />
       </el-main>
 
-      <el-dialog
-        title="工单详情"
-        :visible.sync="dialogFormVisible"
-        fullscreen="true"
-        modal-append-to-body="true"
-      >
-        <TicketDetail />
-      </el-dialog>
-      <el-dialog
-        title="新增客户"
-        top="10vh"
-        :visible.sync="newCusDialogVisible"
-        modal-append-to-body="true"
-      >
-        <NewCustomer />
-      </el-dialog>
-
-      </el-dialog></el-container>
+    </el-container>
   </el-container>
 </template>
 
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import TicketDetail from '@/views/tk-detail'
-import NewCustomer from '@/views/new-cus'
 export default {
-  components: { Pagination, TicketDetail, NewCustomer },
+  components: { Pagination },
   data() {
     const item = {
       date: '2016-05-02',

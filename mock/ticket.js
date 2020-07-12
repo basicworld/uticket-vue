@@ -126,11 +126,9 @@ module.exports = [
     url: '/ticket/file/upload',
     type: 'post',
     response: config => {
-      const detail = mockData.ticketItems[0]
       return {
         'code': 20000,
-        'message': 'success',
-        'data': detail
+        'message': 'success'
       }
     }
   }
