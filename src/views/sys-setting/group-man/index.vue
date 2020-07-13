@@ -32,7 +32,7 @@
           <el-table-column prop="date" label="创建时间" width="140" />
           <el-table-column fixed="right" label="操作" width="200">
             <template slot-scope="scope">
-              <el-button type="text" size="small">编辑</el-button>
+              <el-button type="text" size="small" @click="handleEditGroup(scope.row)">编辑</el-button>
               <el-button type="text" size="small">成员管理</el-button>
               <el-button type="text" size="small">删除</el-button>
             </template>
@@ -89,6 +89,9 @@ export default {
     }
   },
   methods: {
+    handleEditGroup(groupObj) {
+      console.log('handleEditGroup')
+    },
     handlePopNewTkDialog() {
       this.newCusDialogVisible = true
     },

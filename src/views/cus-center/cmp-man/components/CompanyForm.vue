@@ -127,7 +127,12 @@ export default {
     },
     // 重置表单
     onCancel(formName) {
-      this.$refs[formName].resetFields()
+      // 如果是edit，则重置为编辑前的状态
+      if (this.showType === 'edit') {
+        this.form = Object.assign({}, this.formDto)
+      } else { // 如果是new，则重置为全空白
+        this.$refs[formName].resetFields()
+      }
     }
 
   }

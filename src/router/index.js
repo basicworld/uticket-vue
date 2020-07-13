@@ -80,6 +80,18 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/tk-detail',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: '工单详情',
+        component: () => import('@/views/tk-detail/index'),
+        meta: { title: '工单详情', icon: 'example' }
+      }
+    ]
+  },
+  {
     path: '/cus-center',
     component: Layout,
     redirect: '/cus-center/cus-man',

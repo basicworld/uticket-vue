@@ -19,15 +19,17 @@
 
       <el-form-item label="上传附件">
         <el-upload
+          ref="fileUploadRef"
           :limit="3"
           :action="ticketFileUploadUrl"
           :before-upload="beforeFileUpload"
           :on-exceed="handleFileExceed"
           :on-success="handleFileUploadSuccess"
+          :on-change="handleFileUploadChange"
           :on-preview="handleFilePreview"
-          :before-remove="beforeFileRemove"
           :on-remove="handleFileRemove"
           :file-list="fileList"
+          :data="fileUploadExtraData"
         >
           <el-button size="small" type="primary">点击上传</el-button>
         </el-upload>
@@ -113,28 +115,32 @@
 <script>
 import { customerSuggestQueryApi } from '@/api/customer'
 import { userSuggestQueryApi } from '@/api/user'
-import { fileUploadUrl } from '@/api/ticket'
+import { fileUploadUrl, ticketCreateApi } from '@/api/ticket'
 export default {
-  name: 'TicketForm',
+  name: 'NewTicket',
   data() {
     return {
+      fileUploadExtraData: {
+        ticketId: undefined // 工单id
+      },
       ticketFileUploadUrl: fileUploadUrl(),
       customerSearchLoading: false,
       customerOptions: [],
       userSearchLoading: false,
       userOptions: [],
       // 文件列表，格式：{ name: 'food.jpeg', url: 'https://1' }
-      fileList: [],
+      fileList: [], // 附件上传按钮的初始化fileList
+      attachmentList: [], // el-upload 返回的fileList
       form: {
         subject: '', // subject	字符串	是	标题	最大长度255个字符
         content: '', // content	字符串	是	内容
         priority: 'medium', // priority	字符串	否	优先级中文名称， 默认为标准
         customerId: '',
         assigneeId: '',
+        attachmentIds: '', // 附件的id 逗号分隔
         followerIds: '',
         tags: '', // tags	字符串	否	工单标签,如"标签1,标签2",字符串内是标签名字,用逗号隔开
         status: 'open' // status	字符串	否	状态中文名称，默认为开启
-
       },
       rules: {
         subject: [
@@ -197,23 +203,52 @@ export default {
     },
     // 保存工单
     onSubmit() {
-      this.$message('submit!')
+      // 获取附件ids
+      var ids = []
+      var files = this.attachmentList
+      for (var i = 0; i < files.length; i++) {
+        if (ids.indexOf(files[i].response.id) < 0) {
+          ids.push(files[i].response.id)
+        }
+      }
+      this.form.attachmentIds = ids.join()
+      console.log(this.form)
+      // 校验表单
+      this.$refs['form'].validate((valid) => {
+        if (valid) {
+          ticketCreateApi(this.form).then((res) => {
+            if (res.code === 20000) {
+              this.$message.success('工单创建成功')
+            } else {
+              this.$message.warning('工单创建失败，异常代码：' + res.code)
+            }
+          }).catch(() => {
+            this.$message.warning('系统异常，稍后再试')
+          })
+        } else {
+          console.log('表单校验异常，不能提交')
+        }
+      })
     },
     // 重置工单表单
     onCancel() {
-      this.$message({
-        message: 'cancel!',
-        type: 'warning'
-      })
+      this.form = {
+        subject: '', // subject	字符串	是	标题	最大长度255个字符
+        content: '', // content	字符串	是	内容
+        priority: 'medium', // priority	字符串	否	优先级中文名称， 默认为标准
+        customerId: '',
+        assigneeId: '',
+        attachmentIds: '', // 附件的id 逗号分隔
+        followerIds: '',
+        tags: '', // tags	字符串	否	工单标签,如"标签1,标签2",字符串内是标签名字,用逗号隔开
+        status: 'open' // status	字符串	否	状态中文名称，默认为开启
+      }
     },
     // 附件个数超出限制
     handleFileExceed(files, fileList) {
       this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
     },
-    // 附件删除前的确认
-    beforeFileRemove(file, fileList) {
-      return this.$confirm(`确定移除 ${file.name}？`)
-    },
+
     // 文件上传前检查
     beforeFileUpload(file) {
       if (file.size > 10 * 1024 * 1024) {
@@ -229,6 +264,9 @@ export default {
     },
     handleFileUploadSuccess(response, file, fileList) {
       console.log('handleFileUploadSuccess', fileList)
+    },
+    handleFileUploadChange(file, fileList) {
+      this.attachmentList = fileList
     }
   }
 }

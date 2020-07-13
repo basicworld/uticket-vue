@@ -1,6 +1,6 @@
 const Mock = require('mockjs')
 const mockData = Mock.mock({
-  'companyItems|20': [{
+  'companyItems|10': [{
     'id|+1': 1, // id
     'name': '@cword(5,10)', // 公司名称
     'domains': '@url', // 域名

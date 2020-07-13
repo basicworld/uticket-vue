@@ -51,7 +51,7 @@
       top="10vh"
       :visible.sync="newTkDialogVisible"
     >
-      <TicketForm />
+      <NewTicket />
     </el-dialog>
 
   </el-container>
@@ -60,9 +60,9 @@
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import TicketDetail from '@/views/tk-detail'
-import TicketForm from './components/TicketForm'
+import NewTicket from './components/NewTicket'
 export default {
-  components: { Pagination, TicketForm, TicketDetail },
+  components: { Pagination, NewTicket, TicketDetail },
   data() {
     return {
       newTkDialogVisible: false,
