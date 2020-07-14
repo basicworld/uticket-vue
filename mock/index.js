@@ -6,13 +6,15 @@ const table = require('./table')
 const ticket = require('./ticket')
 const customer = require('./customer')
 const company = require('./company')
+const group = require('./group')
 
 const mocks = [
   ...user,
   ...ticket,
   ...customer,
   ...company,
-  ...table
+  ...table,
+  ...group
 ]
 
 // for front mock

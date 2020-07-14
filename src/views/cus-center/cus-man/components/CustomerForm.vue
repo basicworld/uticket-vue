@@ -1,46 +1,44 @@
 <template>
-  <div class="app-container">
-    <el-form ref="form" :rules="rules" :model="form" label-width="50px" size="small">
-      <el-form-item label="姓名" prop="nickName">
-        <el-input v-model="form.nickName" />
-      </el-form-item>
-      <el-form-item label="手机" prop="cellphone">
-        <el-input v-model="form.cellphone" />
-      </el-form-item>
-      <el-form-item label="邮箱" prop="email">
-        <el-input v-model="form.email" />
-      </el-form-item>
-      <el-form-item label="公司" prop="companyName">
-        <el-select
-          v-model="form.companyName"
-          filterable
-          remote
-          placeholder="输入名称搜索"
-          :remote-method="companyRemoteSearch"
-          :loading="companySearchLoading"
-          style="width: 100%;"
-        >
-          <el-option
-            v-for="item in companyOptions"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="标签" prop="tags">
-        <el-input v-model="form.tags" />
-      </el-form-item>
-      <el-form-item label="描述" prop="description">
-        <el-input v-model="form.description" type="textarea" />
-      </el-form-item>
+  <el-form ref="form" :rules="rules" :model="form" label-width="50px" size="small">
+    <el-form-item label="姓名" prop="nickName">
+      <el-input v-model="form.nickName" />
+    </el-form-item>
+    <el-form-item label="手机" prop="cellphone">
+      <el-input v-model="form.cellphone" />
+    </el-form-item>
+    <el-form-item label="邮箱" prop="email">
+      <el-input v-model="form.email" />
+    </el-form-item>
+    <el-form-item label="公司" prop="companyName">
+      <el-select
+        v-model="form.companyName"
+        filterable
+        remote
+        placeholder="输入名称搜索"
+        :remote-method="companyRemoteSearch"
+        :loading="companySearchLoading"
+        style="width: 100%;"
+      >
+        <el-option
+          v-for="item in companyOptions"
+          :key="item.id"
+          :label="item.name"
+          :value="item.id"
+        />
+      </el-select>
+    </el-form-item>
+    <el-form-item label="标签" prop="tags">
+      <el-input v-model="form.tags" />
+    </el-form-item>
+    <el-form-item label="描述" prop="description">
+      <el-input v-model="form.description" type="textarea" />
+    </el-form-item>
 
-      <el-form-item>
-        <el-button type="primary" @click="onSubmit('form')">保存</el-button>
-        <el-button @click="onCancel('form')">重置</el-button>
-      </el-form-item>
-    </el-form>
-  </div>
+    <el-form-item>
+      <el-button type="primary" @click="onSubmit('form')">保存</el-button>
+      <el-button @click="onCancel('form')">重置</el-button>
+    </el-form-item>
+  </el-form>
 </template>
 
 <script>
@@ -200,7 +198,12 @@ export default {
     },
     // 重置表单数据
     onCancel(formName) {
-      this.$refs[formName].resetFields()
+      // 如果是edit，则重置为编辑前的状态
+      if (this.showType === 'edit') {
+        this.form = Object.assign({}, this.formDto)
+      } else { // 如果是new，则重置为全空白
+        this.$refs[formName].resetFields()
+      }
     }
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="16">
+      <el-col :span="16" style="padding-right: 10px;">
         <div class="grid-content bg-purple">
           <!--  工单基本信息展示框 -->
 
@@ -33,8 +33,19 @@
           <!--  工单处理框 -->
 
           <el-tabs type="border-card" class="top-margin">
+            <el-tab-pane label="回复">
+              <el-form ref="actionFormReply" :model="newAction" label-width="70px" size="small">
+                <el-form-item label="回复内容">
+                  <el-input v-model="newAction.content" type="textarea" />
+                </el-form-item>
+                <el-form-item>
+                  <el-button size="mini" type="primary" @click="onSubmitNewAction('replay')">回复</el-button>
+                  <el-button size="mini" @click="onCancel">清空内容</el-button>
+                </el-form-item>
+              </el-form>
+            </el-tab-pane>
             <el-tab-pane label="分配">
-              <el-form ref="actionFormDevide" :model="newAction" label-width="68px" size="small">
+              <el-form ref="actionFormDevide" :model="newAction" label-width="70px" size="small">
                 <el-form-item label="选择客服" prop="assigneeId">
                   <el-select
                     v-model="newAction.assigneeId"
@@ -63,7 +74,7 @@
               </el-form>
             </el-tab-pane>
             <el-tab-pane label="解决">
-              <el-form ref="actionFormSolve" :model="newAction" label-width="68px" size="small">
+              <el-form ref="actionFormSolve" :model="newAction" label-width="70px" size="small">
                 <el-form-item label="处理描述">
                   <el-input v-model="newAction.content" type="textarea" />
                 </el-form-item>
@@ -74,7 +85,7 @@
               </el-form>
             </el-tab-pane>
             <el-tab-pane label="关闭">
-              <el-form ref="actionFormClose" :model="newAction" label-width="68px" size="small">
+              <el-form ref="actionFormClose" :model="newAction" label-width="70px" size="small">
                 <el-form-item label="处理描述">
                   <el-input v-model="newAction.content" type="textarea" />
                 </el-form-item>
@@ -85,7 +96,7 @@
               </el-form>
             </el-tab-pane>
             <el-tab-pane label="删除">
-              <el-form ref="actionFormDelete" :model="newAction" label-width="68px" size="small">
+              <el-form ref="actionFormDelete" :model="newAction" label-width="70px" size="small">
                 <el-form-item label="处理描述">
                   <el-input v-model="newAction.content" type="textarea" />
                 </el-form-item>
@@ -118,7 +129,7 @@
         </div>
       </el-col>
       <el-col :span="8">
-        <div class="grid-content bg-purple-light" style="margin-left: 20px;">
+        <div class="grid-content bg-purple-light">
 
           <!--  工单属性展示框 -->
           <el-card v-if="!ticketAttributesEditable" class="">
@@ -183,12 +194,12 @@
               <span>工单属性编辑</span>
             </div>
             <div>
-              <el-form size="small" label-width="80px">
+              <el-form size="small" label-width="70px" label-position="left">
                 <el-form-item label="编号" prop="id">
                   <el-input v-model="ticketId" disabled />
                 </el-form-item>
                 <el-form-item label="状态" prop="status">
-                  <el-select v-model="ticketAttributes.status">
+                  <el-select v-model="ticketAttributes.status" style="width: 100%;">
                     <el-option key="open" value="open" label="开启" />
                     <el-option key="solving" value="solving" label="解决中" />
                     <el-option key="resolved" value="resolved" label="已解决" />
@@ -196,7 +207,7 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item label="优先级" prop="priority">
-                  <el-select v-model="ticketAttributes.priority">
+                  <el-select v-model="ticketAttributes.priority" style="width: 100%;">
                     <el-option key="low" value="low" label="低" />
                     <el-option key="medium" value="medium" label="标准" />
                     <el-option key="high" value="high" label="高" />
@@ -302,11 +313,11 @@
               <span>客户信息编辑</span>
             </div>
             <div>
-              <el-form size="small">
+              <el-form size="small" label-width="70px" label-position="left">
                 <el-form-item label="姓名" prop="nickName">
                   <el-input v-model="customerAttributes.nickName" />
                 </el-form-item>
-                <el-form-item label="公司名称" prop="companyName">
+                <el-form-item label="公司" prop="companyName">
                   <el-input v-model="customerAttributes.companyName" />
                 </el-form-item>
                 <el-form-item label="手机" prop="cellphone">
@@ -350,6 +361,7 @@ export default {
       userOptions: [],
       // 工单处理action的id
       activityId: undefined,
+      historyActionLoading: false,
       // 工单处理记录
       historyActions: [{
         content: '活动按期开始', // 处理内容
@@ -375,7 +387,6 @@ export default {
       ticketAttributesEditable: false,
       // 工单附加属性
       ticketAttributes: {
-
         status: '', // 状态
         statusCn: '', // 状态
         platform: '', // 来源
@@ -430,6 +441,7 @@ export default {
   },
   created() {
     this.queryTicketDetails()
+    this.userRemoteSearch()
   },
   methods: {
     // 根据action id 查询action列表
@@ -527,6 +539,7 @@ export default {
       }
       // 更新工单状态
     },
+    // 取消
     onCancel() {
       this.$message({
         message: 'cancel!',

@@ -25,7 +25,7 @@ const mockData = Mock.mock({
     'assignGroupId': 1, // 受理客服组id
     'assignGroupName': '默认组', // 受理客服名称
 
-    'priority': 'normal', // 优先级
+    'priority': /(low|medium|high|urgency)/, // 优先级
     'priorityCn': '标准', // 优先级
     'status': 'open', // 状态
     'statusCn': '开启', // 状态

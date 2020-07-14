@@ -35,7 +35,7 @@ const mockData = Mock.mock({
     ]
   }],
   'userSuggestItems|5': [{
-    'id|+1': 1, // id
+    'id|+1': 10, // id
     'email': '@email', // email
     'cellphone': /(135|136|180|185|156|189)\d{8}/, // 手机号,
     'nickName': '@cname' // 姓名
