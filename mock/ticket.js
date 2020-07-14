@@ -1,10 +1,14 @@
 const Mock = require('mockjs')
 
 const mockData = Mock.mock({
+  'actionItems|10': [{
+    content: '@csentence(8, 20)',
+    timestamp: '[客服]张三 @datetime'
+  }],
   'ticketItems|20': [{
     'id': 1, // id
     'fieldNum': '#1', // 编号
-    'subject': '@csentence( 8, 20)', // 主题
+    'subject': '@csentence(8, 20)', // 主题
     'content': '@cparagraph', // 内容
     'contentType': 'txt', // 内容类型
 
@@ -25,9 +29,9 @@ const mockData = Mock.mock({
     'priorityCn': '标准', // 优先级
     'status': 'open', // 状态
     'statusCn': '开启', // 状态
-    'platform': 'hands', // 来源
-    'platformCn': '手工录入', // 来源
-    'actionSessionId': 1257, // 工单对话id 处理记录id
+    'platform': 'hands', // 渠道
+    'platformCn': '手工录入', // 渠道中文
+    'activityId': 1257, // 工单对话id 处理记录id
     'satisfaction': null, // 满意度调查结果 暂不使用
     'tags': '标签１,标签２', // 标签
     'followers': [ // 关注者(客服)
@@ -51,6 +55,7 @@ const mockData = Mock.mock({
       }
     ],
     'creatorId': 1, // 创建人id
+    'creatorName': '@cname',
     'createdAt': '@datetime', // 创建时间
     'updatedAt': '2017-08-18 12:06:02', // 更新时间
     'solvingAt': null, // 开始解决时间
@@ -66,6 +71,19 @@ const mockData = Mock.mock({
 })
 
 module.exports = [
+  // 获取工单活动列表
+  {
+    url: '/ticket-action/list',
+    type: 'post',
+    response: config => {
+      const list = mockData.actionItems
+      return {
+        'code': 20000,
+        'message': 'success',
+        'data': list
+      }
+    }
+  },
   // 删除工单
   {
     url: '/ticket/delete',

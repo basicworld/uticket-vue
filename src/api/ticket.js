@@ -1,5 +1,31 @@
 import request from '@/utils/request'
 // API规范参照：http://www.udesk.cn/doc/apiv2/tickets/#_3
+
+// 创建工单活动
+export function ticketActionCreateApi(data) {
+  return request({
+    url: '/ticket-action/create',
+    method: 'post',
+    data
+  })
+}
+// 查询工单活动列表
+export function ticketActionListQueryApi(data) {
+  return request({
+    url: '/ticket-action/list',
+    method: 'post',
+    data
+  })
+}
+// 工单活动详情
+export function ticketActionDetailQueryApi(data) {
+  return request({
+    url: '/ticket-action/detail',
+    method: 'post',
+    data
+  })
+}
+
 /**
  * 创建工单
  * @param {ticket:{}} data 工单对象
