@@ -6,25 +6,31 @@ const mockData = Mock.mock({
     'fieldNum': '#1', // 编号
     'subject': '@csentence( 8, 20)', // 主题
     'content': '@cparagraph', // 内容
-    'contentType': 'html', // 内容类型
-    'userId': 47, // 客户id
-    'userName': '13000020520', // 客户姓名
-    'userEmail': '1234567890@qq.com', // 客户email
-    'userCellphone': '13000020520', // 客户手机
-    'companyId': null, // 客户所属公司id
+    'contentType': 'txt', // 内容类型
+
+    'customerId': 47, // 客户id
+    'customerName': '@cname', // 客户姓名
+    'customerEmail': '@email', // 客户email
+    'customerCellphone': /(135|136|180|185|156|189)\d{8}/, // 客户手机
+    'companyId': 1111, // 客户所属公司id
+    'companyName': '人民日报', // 客户所属公司id
+
     'assigneeId': 12, // 受理客服id
     'assigneeName': '@cname', // 受理客服姓名
     'assigneeAvatar': 'https://xxxxxxxxxxxxxxxxx/Fk_5aUhOY0U90dHQU6V34N9WuqX9', // 受理客服头像
-    'userGroupId': 1, // 受理客服组id
-    'userGroupName': '默认组', // 受理客服名称
-    'priority': '标准', // 优先级
-    'status': '开启', // 状态
-    'statusEn': 'open', // 状态英文
-    'platform': '手工录入', // 来源
-    'imSubSessionId': 1257, // 工单回话id
-    'satisfaction': null, // 满意度调查结果
-    'tags': '标签１,标签２', // 变迁
-    'followers': [ // 关注者
+    'assignGroupId': 1, // 受理客服组id
+    'assignGroupName': '默认组', // 受理客服名称
+
+    'priority': 'normal', // 优先级
+    'priorityCn': '标准', // 优先级
+    'status': 'open', // 状态
+    'statusCn': '开启', // 状态
+    'platform': 'hands', // 来源
+    'platformCn': '手工录入', // 来源
+    'actionSessionId': 1257, // 工单对话id 处理记录id
+    'satisfaction': null, // 满意度调查结果 暂不使用
+    'tags': '标签１,标签２', // 标签
+    'followers': [ // 关注者(客服)
       {
         'id': 2,
         'nickName': 'Tom'
@@ -40,8 +46,8 @@ const mockData = Mock.mock({
     ],
     'attachments': [ // 附件
       {
-        'name': '附件1',
-        'url': 'https://qn-public.udesk.cn/%E7%94%A8%E4%BA%8E%E4%B8%8A%E4%BC%A0%E7%9A%84%E6%96%87%E4%BB%B6-1511169203.txt'
+        'name': '附件1.doc',
+        'url': 'https://qn-public.udesk.cn/1111.txt'
       }
     ],
     'creatorId': 1, // 创建人id
@@ -52,7 +58,7 @@ const mockData = Mock.mock({
     'closedAt': null, // 关闭时间
     'solvedDeadline': null, // 解决截止日期
     'repliedAt': '2017-08-16 20:41:03', // 最后回复日期
-    'agentRepliedAt': '2017-08-16 20:41:03', // 客服最后回复日期
+    'assigneeRepliedAt': '2017-08-16 20:41:03', // 客服最后回复日期
     'customerRepliedAt': '2017-08-08 20:47:42', // 客户最后回复日期
     'repliedBy': 'xxx' // 最后回复人
   }

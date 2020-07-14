@@ -116,11 +116,64 @@
         <div class="grid-content bg-purple-light" style="margin-left: 20px;">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
-              <span>属性</span>
+              <span>工单属性</span>
               <el-button style="float: right; padding: 3px 0" type="text">编辑</el-button>
             </div>
-            <div v-for="o in 4" :key="o" class="text item">
-              {{ '列表内容 ' + o }}
+            <div>
+              <el-row>
+                <el-col :span="6"><span class="attr-table-title">编号:</span></el-col>
+                <el-col :span="18"><span>#123</span></el-col>
+              </el-row>
+              <el-row class="attr-row">
+                <el-col :span="6"><span class="attr-table-title">状态:</span></el-col>
+                <el-col :span="18"><span>解决中</span></el-col>
+              </el-row>
+              <el-row class="attr-row">
+                <el-col :span="6"><span class="attr-table-title">优先级:</span></el-col>
+                <el-col :span="18"><span>普通</span></el-col>
+              </el-row>
+              <el-row class="attr-row">
+                <el-col :span="6"><span class="attr-table-title">渠道:</span></el-col>
+                <el-col :span="18">
+                  <span>邮件/jack@gmail.com</span>
+                </el-col>
+              </el-row>
+              <el-row class="attr-row">
+                <el-col :span="6"><span class="attr-table-title">来源:</span></el-col>
+                <el-col :span="18">
+                  <span>邮件</span>
+                </el-col>
+              </el-row>
+              <el-row class="attr-row">
+                <el-col :span="6"><span class="attr-table-title">标签:</span></el-col>
+                <el-col :span="18">
+                  <span>有钱，任性</span>
+                </el-col>
+              </el-row>
+              <el-row class="attr-row">
+                <el-col :span="6"><span class="attr-table-title">受理人:</span></el-col>
+                <el-col :span="18">
+                  <span>客服1</span>
+                </el-col>
+              </el-row>
+              <el-row class="attr-row">
+                <el-col :span="6"><span class="attr-table-title">创建人:</span></el-col>
+                <el-col :span="18">
+                  <span>张三</span>
+                </el-col>
+              </el-row>
+              <el-row class="attr-row">
+                <el-col :span="6"><span class="attr-table-title">关注人:</span></el-col>
+                <el-col :span="18">
+                  <span>李四，王五</span>
+                </el-col>
+              </el-row>
+              <el-row class="attr-row">
+                <el-col :span="6"><span class="attr-table-title">创建时间:</span></el-col>
+                <el-col :span="18">
+                  <span>2020-10-01 11:23</span>
+                </el-col>
+              </el-row>
             </div>
           </el-card>
 
@@ -129,8 +182,32 @@
               <span>客户信息</span>
               <el-button style="float: right; padding: 3px 0" type="text">编辑</el-button>
             </div>
-            <div v-for="o in 4" :key="o" class="text item">
-              {{ '列表内容 ' + o }}
+            <div>
+              <el-row>
+                <el-col :span="6"><span class="attr-table-title">姓名:</span></el-col>
+                <el-col :span="18">
+                  <span>{{ customerAttributes.nickName }}</span>
+                </el-col>
+              </el-row>
+              <el-row class="attr-row">
+                <el-col :span="6"><span class="attr-table-title">公司:</span></el-col>
+                <el-col :span="18">
+                  <span>{{ customerAttributes.companyName }}</span>
+                </el-col>
+              </el-row>
+              <el-row class="attr-row">
+                <el-col :span="6"><span class="attr-table-title">电话:</span></el-col>
+                <el-col :span="18">
+                  <span>{{ customerAttributes.cellphone }}</span>
+                </el-col>
+              </el-row>
+              <el-row class="attr-row">
+                <el-col :span="6"><span class="attr-table-title">邮箱:</span></el-col>
+                <el-col :span="18">
+                  <span>{{ customerAttributes.email }}</span>
+                </el-col>
+              </el-row>
+
             </div>
           </el-card>
 
@@ -150,7 +227,8 @@
 
 <script>
 import { userSuggestQueryApi } from '@/api/user'
-
+import { ticketDetailQueryApi } from '@/api/ticket'
+import { RESP_CODE } from '@/utils/response-code'
 export default {
   name: 'TicketDetail',
   data() {
@@ -170,18 +248,10 @@ export default {
       }],
       // dialog visible
       innerVisible: false,
-      form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
-      },
       ticketId: '', // 工单id
       ticketBasicInfoEditable: false,
+      // 工单详细数据
+      ticketAllInfo: {},
       // 工单基础数据
       ticketBasicInfo: {
         subject: 'default subject', // 标题
@@ -196,6 +266,7 @@ export default {
         tags: '', // 标签
         priority: '', // 优先级
         creatorId: '', // 创建人
+        creatorName: '', // 创建人
         assigneeId: '', // 受理人
         assigneeName: '', // 受理人姓名
         followers: [], // 关注人
@@ -219,7 +290,57 @@ export default {
 
     }
   },
+  watch: {
+    // 监控api返回的工单属性详情
+    ticketAllInfo: {
+      deep: true,
+      handler(val) {
+        this.copyTicketAllInfo()
+      }
+    }
+  },
+  created() {
+    this.queryTicketById()
+  },
   methods: {
+    // 根据id查询工单详情
+    queryTicketById(ticketId) {
+      ticketDetailQueryApi({ id: ticketId }).then(res => {
+        if (res.code === RESP_CODE.OK) {
+          this.ticketAllInfo = res.data
+        } else {
+          this.$message.warning('查询工单详情异常：' + res.code)
+        }
+      }).catch(() => {
+        this.$message.error('查询工单详情失败，稍后再试')
+      })
+    },
+    // 把ticketAllInfo复制给其他变量
+    copyTicketAllInfo() {
+      console.log('copyTicketAllInfo', this.ticketAllInfo)
+      // id
+      this.ticketId = this.ticketAllInfo.ticketId
+      // 工单基本属性
+      this.ticketBasicInfo.subject = this.ticketAllInfo.subject
+      this.ticketBasicInfo.content = this.ticketAllInfo.content
+      // 工单附加属性
+      this.ticketAttributes.status = this.ticketAllInfo.status // 状态
+      this.ticketAttributes.statusEn = this.ticketAllInfo.statusEn // 状态 英文
+      this.ticketAttributes.platform = this.ticketAllInfo.platform // 来源
+      this.ticketAttributes.tags = this.ticketAllInfo.tags // 标签
+      this.ticketAttributes.priority = this.ticketAllInfo.priority // 优先级
+      this.ticketAttributes.creatorId = this.ticketAllInfo.creatorId // 创建人
+      this.ticketAttributes.creatorName = this.ticketAllInfo.creatorName // 创建人
+      this.ticketAttributes.assigneeId = this.ticketAllInfo.assigneeId // 受理人
+      this.ticketAttributes.assigneeName = this.ticketAllInfo.assigneeName // 受理人姓名
+      this.ticketAttributes.followers = this.ticketAllInfo.follower // 关注人
+      this.ticketAttributes.createdAt = this.ticketAllInfo.createdAt// 创建时间
+      // 客户属性
+      this.customerAttributes.nickName = this.ticketAllInfo.nickName // 名称
+      this.customerAttributes.email = this.ticketAllInfo.email // 邮箱
+      this.customerAttributes.cellphone = this.ticketAllInfo.cellphone // 手机号
+      this.customerAttributes.companyName = this.ticketAllInfo.companyName // 公司名称
+    },
     // 远程搜索user
     userRemoteSearch(query) {
       if (query !== '') {
@@ -267,6 +388,12 @@ export default {
 }
 .top-margin{
   margin-top: 10px;
+}
+.attr-row{
+  margin-top: 10px;
+}
+.attr-table-title{
+  font-weight: bold;
 }
 .line{
   text-align: center;
