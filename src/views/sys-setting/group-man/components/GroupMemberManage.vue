@@ -40,7 +40,7 @@ export default {
       memberOptions: [],
       // 表单数据
       form: {
-        memberIds: [] // [1,2,3]
+        memberIds: [] // 用户id，格式示例 [1,2,3]
       }
 
     }

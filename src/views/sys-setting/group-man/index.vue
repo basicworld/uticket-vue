@@ -2,6 +2,7 @@
   <el-container style="height: 100vh; border: 1px solid #eee">
 
     <el-main>
+      <!-- 搜索区 -->
       <el-form :inline="true" :model="listQuery" class="demo-form-inline" size="small">
         <el-form-item label="用户组名称">
           <el-input v-model="listQuery.groupName" placeholder="搜索用户组名称" />
@@ -13,15 +14,13 @@
         </el-form-item>
       </el-form>
 
-      <el-table
-        :data="tableData"
-        size="small"
-      >
+      <!-- 列表展示区 -->
+      <el-table :data="tableData" size="small">
         <el-table-column type="selection" width="45" />
-        <el-table-column prop="groupName" label="名称" width="200" />
-        <el-table-column prop="description" label="描述" width="200" />
-        <el-table-column prop="userCount" label="用户数" width="200" />
-        <el-table-column prop="createdAt" label="创建时间" width="140" />
+        <el-table-column prop="groupName" label="名称" />
+        <el-table-column prop="description" label="描述" />
+        <el-table-column prop="userCount" label="用户数" />
+        <el-table-column prop="createdAt" label="创建时间" />
         <el-table-column fixed="right" label="操作" width="200">
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="handleEditGroup(scope.row)">编辑</el-button>
@@ -39,6 +38,7 @@
       />
     </el-main>
 
+    <!-- 新增用户组对话框 -->
     <el-dialog
       title="新增用户组"
       top="10vh"
@@ -46,6 +46,7 @@
     >
       <GroupForm :show-type="groupDialogShowType" @handleHideGroupForm="newGroupDialogVisible=false" />
     </el-dialog>
+    <!-- 编辑用户组对话框 -->
     <el-dialog
       title="编辑用户组"
       top="10vh"
@@ -53,6 +54,7 @@
     >
       <GroupForm :show-type="groupDialogShowType" :form-dto="formDto" @handleHideGroupForm="editGroupDialogVisible=false" />
     </el-dialog>
+    <!-- 成员管理对话框 -->
     <el-dialog
       title="成员管理"
       top="10vh"
@@ -74,58 +76,60 @@ export default {
   components: { Pagination, GroupForm, GroupMemberManage },
   data() {
     return {
+      // 用户组对话框类型 new--新增   edit--编辑
       groupDialogShowType: 'new', // new 或者 edit
+      // 新增用户组对话框可见性
       newGroupDialogVisible: false,
+      // 编辑用户组对话框可见性
       editGroupDialogVisible: false,
+      // 用户成员管理对话框可见性
       editGroupMemberDialogVisible: false,
-      total: 0,
-      listLoading: true,
-      listQuery: {
+      total: 0, // items 数量
+      listLoading: true, // 加载动画
+      listQuery: { // 搜索条件
         page: 1,
         limit: 10,
-        groupName: ''
+        groupName: '' // 用户组名称
       },
-      tableData: [],
-      dialogFormVisible: false,
-      formDto: {}
+      tableData: [], // 列表数据
+      formDto: {} // 对话框数据传递
     }
   },
   mounted() {
     this.doQuery()
   },
   methods: {
+    // 显示新增用户组对话框
     handleNewGroup() {
       this.groupDialogShowType = 'new'
       this.newGroupDialogVisible = true
     },
+    // 显示编辑用户组对话框
     handleEditGroup(groupObj) {
       this.formDto = Object.assign({}, groupObj)
       this.groupDialogShowType = 'edit'
       this.editGroupDialogVisible = true
     },
+    // 显示成员管理对话框
     handleEditGroupMember(groupObj) {
       this.formDto = Object.assign({}, groupObj)
       this.editGroupMemberDialogVisible = true
     },
-    doShowDetail() {
-      this.$message('doShowDetail!')
-      this.dialogFormVisible = true
-    },
+    // 列表查询
     doQuery() {
-      groupListQueryApi().then(res => {
+      groupListQueryApi(this.listQuery).then(res => {
         if (res.code === RESP_CODE.OK) {
           this.tableData = res.data
+          this.total = res.total
         }
       }).catch(() => {
         this.$message.error('查询异常，稍后再试')
       })
     },
     onCancel() {
-      this.$message({
-        message: 'cancel!',
-        type: 'warning'
-      })
+      this.listQuery.groupName = ''
     },
+    // 删除用户组
     doRemove(groupObj) {
       this.$confirm(`确定移除 ${groupObj.groupName}?`).then(() => {
         groupDeleteApi({ id: groupObj.id }).then(res => {

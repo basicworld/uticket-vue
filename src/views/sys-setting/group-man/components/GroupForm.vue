@@ -1,14 +1,14 @@
 <template>
   <el-form ref="form" :rules="rules" :model="form" label-width="50px" size="small">
     <el-form-item label="名称" prop="groupName">
-      <el-input v-model="form.groupName" />
+      <el-input v-model="form.groupName" placeholder="用户组名称，2到20字" />
     </el-form-item>
     <el-form-item label="描述" prop="description">
-      <el-input v-model="form.description" />
+      <el-input v-model="form.description" placeholder="用户组描述，不超过100字" />
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="onSubmit('form')">保存</el-button>
-      <el-button @click="onCancel('form')">重置</el-button>
+      <el-button @click="onCancel('form')">清空</el-button>
     </el-form-item>
   </el-form>
 </template>
