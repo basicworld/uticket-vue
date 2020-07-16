@@ -22,7 +22,7 @@ import { groupUpdateApi, groupCustomerQueryApi } from '@/api/group'
 import { RESP_CODE } from '@/utils/response-code'
 import { userSuggestQueryApi } from '@/api/user'
 export default {
-  name: 'GroupMemberManage',
+  name: 'UserRoleManage',
   props: {
     groupId: {
       type: Number,

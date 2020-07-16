@@ -5,17 +5,18 @@ const mockData = Mock.mock({
     'email': '@email', // email
     'cellphone': /(135|136|180|185|156|189)\d{8}/, // 手机号,
     'nickName': '@cname', // 姓名
+    'aliase': '@cname 昵称',
     'profile': 'im', // 员工类型
-    'aliase': null, // 外显昵称
-    'roleName': 'agent', // 角色
+    'roleNames': '普通客服，组长', // 角色
     'duty': null, // 员工职务
-    'userGroupIds': [1, 2], // 所属客服组列表
+    'groupIds': [1, 2], // 所属客服组列表
+    'groupNames': '金融部，科技部',
     'imAbilityValue': 10, // 对话技能值
     'workId': '123', // 工号
     'disableStatus': 'enable', // 启用或禁用
     'availability': true, // 能否接受自动工单分配，暂不使用
     'avatar': null, // 头像，暂不使用
-    'userGroups': [ // 所属客服组信息
+    'groups': [ // 所属客服组信息
       {
         'id': 1,
         'name': '测试组'
@@ -135,7 +136,8 @@ module.exports = [
       return {
         'code': 20000,
         'message': 'success',
-        'data': list
+        'data': list,
+        'total': 23
       }
     }
   },
@@ -148,7 +150,19 @@ module.exports = [
       return {
         'code': 20000,
         'message': 'success',
-        'data': list
+        'data': list,
+        'total': 5
+      }
+    }
+  },
+  // user delete
+  {
+    url: '/user/delete',
+    type: 'post',
+    response: config => {
+      return {
+        'code': 20000,
+        'message': 'success'
       }
     }
   }

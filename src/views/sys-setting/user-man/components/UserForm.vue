@@ -1,10 +1,10 @@
 <template>
   <el-form ref="form" :rules="rules" :model="form" label-width="60px" size="small">
-    <el-form-item label="名称" prop="groupName">
-      <el-input v-model="form.groupName" placeholder="用户组名称，2到20字" />
+    <el-form-item label="名称" prop="nickName">
+      <el-input v-model="form.nickName" placeholder="用户名称，2到20字" />
     </el-form-item>
     <el-form-item label="描述" prop="description">
-      <el-input v-model="form.description" placeholder="用户组描述，不超过100字" />
+      <el-input v-model="form.description" placeholder="用户描述，不超过100字" />
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="onSubmit('form')">保存</el-button>
@@ -14,12 +14,12 @@
 </template>
 
 <script>
-import { groupCreateApi, groupUpdateApi } from '@/api/group'
+import { userCreateApi, userUpdateApi } from '@/api/user'
 
 export default {
-  name: 'GroupForm',
+  name: 'UserForm',
   props: {
-    // 类型：new--新增用户组  edit--更新用户组
+    // 类型：new--新增用户  edit--更新用户
     showType: {
       type: String,
       required: true,
@@ -34,7 +34,7 @@ export default {
       default() {
         return {
           id: '',
-          groupName: '',
+          nickName: '',
           description: ''
         }
       }
@@ -46,13 +46,13 @@ export default {
       // group表单数据
       form: {
         id: '',
-        groupName: '',
+        userName: '',
         description: ''
       },
       // 表单验证规则
       rules: {
-        groupName: [
-          { required: true, message: '用户组名称为必填项', trigger: 'blur' },
+        userName: [
+          { required: true, message: '用户名称为必填项', trigger: 'blur' },
           { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
         ],
         description: [
@@ -76,14 +76,14 @@ export default {
     })
   },
   methods: {
-    // 保存group
+    // 保存user
     onSubmit(formName) {
       // 根据showType选择不同的提交方法
       var choosedApi = () => {}
       if (this.showType === 'edit') { // edit
-        choosedApi = groupUpdateApi
+        choosedApi = userUpdateApi
       } else { // new
-        choosedApi = groupCreateApi
+        choosedApi = userCreateApi
       }
       this.$refs[formName].validate((valid) => {
         if (valid) {
