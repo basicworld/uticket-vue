@@ -1,11 +1,27 @@
 <template>
-  <el-form ref="form" :rules="rules" :model="form" label-width="60px" size="small">
-    <el-form-item label="名称" prop="nickName">
-      <el-input v-model="form.nickName" placeholder="用户名称，2到20字" />
+  <el-form ref="form" :rules="rules" :model="form" label-width="120px" size="small">
+    <el-form-item label="账号/邮箱" prop="nickName">
+      <el-input v-model="form.nickName" placeholder="请输入邮箱" />
     </el-form-item>
-    <el-form-item label="描述" prop="description">
-      <el-input v-model="form.description" placeholder="用户描述，不超过100字" />
+    <el-form-item label="姓名" prop="description">
+      <el-input v-model="form.description" placeholder="请输入用户姓名" />
     </el-form-item>
+    <el-form-item label="手机" prop="description">
+      <el-input v-model="form.description" placeholder="请输入11位手机号" />
+    </el-form-item>
+    <el-form-item label="用户组" prop="description">
+      <el-input v-model="form.description" placeholder="请选择用户组" />
+    </el-form-item>
+    <el-form-item label="角色" prop="description">
+      <el-input v-model="form.description" placeholder="请选择角色" />
+    </el-form-item>
+    <el-form-item label="备注" prop="description">
+      <el-input v-model="form.description" placeholder="" />
+    </el-form-item>
+    <el-form-item label="初始密码" prop="description">
+      <el-input v-model="form.description" placeholder="请输入密码" />
+    </el-form-item>
+
     <el-form-item>
       <el-button type="primary" @click="onSubmit('form')">保存</el-button>
       <el-button @click="onCancel('form')">清空</el-button>

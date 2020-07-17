@@ -7,6 +7,7 @@ const ticket = require('./ticket')
 const customer = require('./customer')
 const company = require('./company')
 const group = require('./group')
+const role = require('./role')
 
 const mocks = [
   ...user,
@@ -14,6 +15,7 @@ const mocks = [
   ...customer,
   ...company,
   ...table,
+  ...role,
   ...group
 ]
 
