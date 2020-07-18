@@ -1,7 +1,7 @@
 <template>
   <el-form ref="form" :rules="rules" :model="form" label-width="50px" size="small">
-    <el-form-item label="姓名" prop="nickName">
-      <el-input v-model="form.nickName" />
+    <el-form-item label="姓名" prop="username">
+      <el-input v-model="form.username" />
     </el-form-item>
     <el-form-item label="手机" prop="cellphone">
       <el-input v-model="form.cellphone" />
@@ -63,7 +63,7 @@ export default {
       required: false,
       default() {
         return {
-          nickName: '',
+          username: '',
           cellphone: '', // 手机号
           email: '', // 邮箱
           companyName: '',
@@ -102,7 +102,7 @@ export default {
       companyOptions: [],
       // customer表单数据
       form: {
-        nickName: '',
+        username: '',
         cellphone: '', // 手机号
         email: '', // 邮箱
         companyName: '',
@@ -111,7 +111,7 @@ export default {
       },
       // 表单验证规则
       rules: {
-        nickName: [
+        username: [
           { required: true, message: '姓名为必填项', trigger: 'blur' },
           { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
         ],

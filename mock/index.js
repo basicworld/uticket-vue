@@ -8,6 +8,7 @@ const customer = require('./customer')
 const company = require('./company')
 const group = require('./group')
 const role = require('./role')
+const permission = require('./permission')
 
 const mocks = [
   ...user,
@@ -16,6 +17,7 @@ const mocks = [
   ...company,
   ...table,
   ...role,
+  ...permission,
   ...group
 ]
 

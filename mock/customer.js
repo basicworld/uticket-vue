@@ -2,7 +2,7 @@ const Mock = require('mockjs')
 const mockData = Mock.mock({
   'customerItems|10': [{
     'id': '@id', // id
-    'nickName': '@cname', // 姓名
+    'username': '@cname', // 姓名
     'level': /(normal|vip)/, // 级别 normal vip
     'description': null, // 描述
     'ownerId': 1, // 所属客服id，暂不启用
@@ -21,7 +21,7 @@ const mockData = Mock.mock({
   }],
   'customerSuggestItems|5': [{
     'id': '@id', // id
-    'nickName': '@cname', // 姓名
+    'username': '@cname', // 姓名
     'email': '@email', // 邮箱
     'cellphone': /(135|136|180|185|156|189)\d{8}/ // 手机号
   }]

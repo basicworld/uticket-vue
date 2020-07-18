@@ -6,8 +6,7 @@ const mockData = Mock.mock({
     timestamp: '[客服]张三 @datetime'
   }],
   'ticketItems|20': [{
-    'id': 1, // id
-    'fieldNum': '#1', // 编号
+    'id|+1': 1, // id
     'subject': '@csentence(8, 20)', // 主题
     'content': '@cparagraph', // 内容
     'contentType': 'txt', // 内容类型
@@ -37,15 +36,15 @@ const mockData = Mock.mock({
     'followers': [ // 关注者(客服)
       {
         'id': 2,
-        'nickName': 'Tom'
+        'username': 'Tom'
       },
       {
         'id': 3,
-        'nickName': 'Jerry'
+        'username': 'Jerry'
       },
       {
         'id': 12,
-        'nickName': 'Lucy'
+        'username': 'Lucy'
       }
     ],
     'attachments': [ // 附件
@@ -80,7 +79,8 @@ module.exports = [
       return {
         'code': 20000,
         'message': 'success',
-        'data': list
+        'data': list,
+        'total': 1234
       }
     }
   },
@@ -127,7 +127,8 @@ module.exports = [
       return {
         'code': 20000,
         'message': 'success',
-        'data': list
+        'data': list,
+        'total': 1122
       }
     }
   },

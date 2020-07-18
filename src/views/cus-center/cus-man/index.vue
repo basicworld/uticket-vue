@@ -3,7 +3,7 @@
     <el-main>
       <el-form :inline="true" :model="listQuery" class="demo-form-inline" size="small">
         <el-form-item label="姓名">
-          <el-input v-model="listQuery.nickName" placeholder="按姓名查询" />
+          <el-input v-model="listQuery.username" placeholder="按姓名查询" />
         </el-form-item>
         <el-form-item label="邮箱">
           <el-input v-model="listQuery.email" placeholder="按邮箱查询" />
@@ -24,7 +24,7 @@
         size="small"
       >
         <el-table-column type="selection" width="45" />
-        <el-table-column prop="nickName" label="客户名称" />
+        <el-table-column prop="username" label="客户名称" />
         <el-table-column prop="level" label="等级" />
         <el-table-column prop="companyName" label="公司" show-overflow-tooltip />
         <el-table-column prop="email" label="邮箱" show-overflow-tooltip />
@@ -87,7 +87,7 @@ export default {
       listQuery: {
         page: 1,
         limit: 10,
-        nickName: '',
+        username: '',
         email: '',
         cellphone: ''
       },
@@ -125,7 +125,7 @@ export default {
     },
     // 取消筛选条件
     onCancel() {
-      this.listQuery.nickName = ''
+      this.listQuery.username = ''
       this.listQuery.email = ''
       this.listQuery.cellphone = ''
     }

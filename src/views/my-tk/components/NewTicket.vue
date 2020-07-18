@@ -47,7 +47,7 @@
           <el-option
             v-for="item in customerOptions"
             :key="item.id"
-            :label="item.nickName"
+            :label="item.username"
             :value="item.id"
           />
         </el-select>
@@ -66,7 +66,7 @@
           <el-option
             v-for="item in userOptions"
             :key="item.id"
-            :label="item.nickName"
+            :label="item.username"
             :value="item.id"
           />
         </el-select>
@@ -86,7 +86,7 @@
           <el-option
             v-for="item in userOptions"
             :key="item.id"
-            :label="item.nickName"
+            :label="item.username"
             :value="item.id"
           />
         </el-select>

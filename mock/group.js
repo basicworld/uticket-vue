@@ -13,7 +13,7 @@ const mockData = Mock.mock({
     'id|+1': 10, // id
     'email': '@email', // email
     'cellphone': /(135|136|180|185|156|189)\d{8}/, // 手机号,
-    'nickName': '@cname' // 姓名
+    'username': '@cname' // 姓名
 
   }]
 })

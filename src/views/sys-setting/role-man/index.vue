@@ -9,7 +9,7 @@
         <el-form-item>
           <el-button type="primary" @click="doQuery">查询</el-button>
           <el-button @click="onCancel">重置</el-button>
-          <el-button type="primary" @click="handlePopNewRoleDialog">新增角色</el-button>
+          <el-button type="primary" @click="handleNewRole">新增角色</el-button>
         </el-form-item>
       </el-form>
 
@@ -30,26 +30,25 @@
         :total="total"
         :page.sync="listQuery.page"
         :limit.sync="listQuery.limit"
-        @pagination="getData"
+        @pagination="doQuery"
       />
     </el-main>
 
     <el-dialog
-      title="工单详情"
-      :visible.sync="dialogFormVisible"
-      fullscreen="true"
-      modal-append-to-body="true"
-    >
-      <TicketDetail />
-    </el-dialog>
-    <el-dialog
       title="新增角色"
       top="10vh"
-      :visible.sync="roleEditDialogVisible"
-      modal-append-to-body="true"
+      :visible.sync="newRoleDialogVisible"
       width="70%"
     >
-      <RoleEdit />
+      <RoleForm :show-type="roleDialogShowType" @handleHideRoleForm="newRoleDialogVisible=false" />
+    </el-dialog>
+    <el-dialog
+      title="编辑角色"
+      top="10vh"
+      :visible.sync="editRoleDialogVisible"
+      width="70%"
+    >
+      <RoleForm :show-type="roleDialogShowType" :form-dto="formDto" @handleHideRoleForm="editRoleDialogVisible=false" />
     </el-dialog>
 
   </el-container>
@@ -57,16 +56,17 @@
 
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import TicketDetail from '@/views/tk-detail'
-import RoleEdit from './components/RoleEdit'
+import RoleForm from './components/RoleForm'
 import { roleListQueryApi, roleDeleteApi } from '@/api/role'
 import { RESP_CODE } from '@/utils/response-code'
 
 export default {
-  components: { Pagination, TicketDetail, RoleEdit },
+  components: { Pagination, RoleForm },
   data() {
     return {
-      roleEditDialogVisible: false,
+      roleDialogShowType: 'new',
+      editRoleDialogVisible: false,
+      newRoleDialogVisible: false,
       total: 0,
       listLoading: true,
       listQuery: {
@@ -75,17 +75,14 @@ export default {
         roleName: ''
       },
       tableData: [],
-      dialogFormVisible: false
+      dialogFormVisible: false,
+      formDto: {}
     }
   },
   mounted() {
     this.doQuery()
   },
   methods: {
-    // 编辑角色
-    handleEditRole(roleObj) {
-
-    },
     // 删除角色
     handleDeleteRole(roleObj) {
       this.$confirm(`确定移除 ${roleObj.roleName}?`).then(() => {
@@ -114,8 +111,16 @@ export default {
         this.$message.error('请求异常，稍后再试')
       })
     },
-    handlePopNewRoleDialog() {
-      this.roleEditDialogVisible = true
+    // 显示新增role对话框
+    handleNewRole() {
+      this.roleDialogShowType = 'new'
+      this.newRoleDialogVisible = true
+    },
+    // 显示编辑role对话框
+    handleEditRole(roleObj) {
+      this.formDto = Object.assign({}, roleObj)
+      this.roleDialogShowType = 'edit'
+      this.editRoleDialogVisible = true
     },
     onCancel() {
       this.listQuery.roleName = ''

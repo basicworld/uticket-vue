@@ -5,7 +5,7 @@
         <el-option
           v-for="item in memberOptions"
           :key="item.id"
-          :label="item.nickName"
+          :label="item.username"
           :value="item.id"
         />
       </el-select>

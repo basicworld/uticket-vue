@@ -59,7 +59,7 @@
                     <el-option
                       v-for="item in userOptions"
                       :key="item.id"
-                      :label="item.nickName"
+                      :label="item.username"
                       :value="item.id"
                     />
                   </el-select>
@@ -233,7 +233,7 @@
                     <el-option
                       v-for="item in userOptions"
                       :key="item.id"
-                      :label="item.nickName"
+                      :label="item.username"
                       :value="item.id"
                     />
                   </el-select>
@@ -252,7 +252,7 @@
                     <el-option
                       v-for="item in userOptions"
                       :key="item.id"
-                      :label="item.nickName"
+                      :label="item.username"
                       :value="item.id"
                     />
                   </el-select>
@@ -282,7 +282,7 @@
               <el-row>
                 <el-col :span="6"><span class="attr-table-title">姓名:</span></el-col>
                 <el-col :span="18">
-                  <span>{{ customerAttributes.nickName }}</span>
+                  <span>{{ customerAttributes.username }}</span>
                 </el-col>
               </el-row>
               <el-row class="attr-row">
@@ -314,8 +314,8 @@
             </div>
             <div>
               <el-form size="small" label-width="70px" label-position="left">
-                <el-form-item label="姓名" prop="nickName">
-                  <el-input v-model="customerAttributes.nickName" />
+                <el-form-item label="姓名" prop="username">
+                  <el-input v-model="customerAttributes.username" />
                 </el-form-item>
                 <el-form-item label="公司" prop="companyName">
                   <el-input v-model="customerAttributes.companyName" />
@@ -408,7 +408,7 @@ export default {
       // 客户属性
       customerAttributes: {
         customerId: '',
-        nickName: '', // 名称
+        username: '', // 名称
         email: '', // 邮箱
         cellphone: '', // 手机号
         companyId: '',
@@ -498,14 +498,14 @@ export default {
         this.ticketAttributes.followers = followers
         var names = []
         for (var i = 0; i < followers.length; i++) {
-          names.push(followers[i].nickName)
+          names.push(followers[i].username)
         }
         this.ticketAttributes.followerNames = names.join()
       }
       this.ticketAttributes.createdAt = this.ticketAllInfo.createdAt// 创建时间
       // 客户属性
       this.customerAttributes.customerId = this.ticketAllInfo.customerId // 客户id
-      this.customerAttributes.nickName = this.ticketAllInfo.customerName // 名称
+      this.customerAttributes.username = this.ticketAllInfo.customerName // 名称
       this.customerAttributes.email = this.ticketAllInfo.customerEmail // 邮箱
       this.customerAttributes.cellphone = this.ticketAllInfo.customerCellphone // 手机号
       this.customerAttributes.companyId = this.ticketAllInfo.companyId // 公司id
