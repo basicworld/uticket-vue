@@ -1,23 +1,17 @@
 <template>
   <div class="app-container">
-    <el-form ref="form" :model="form" label-width="120px" size="small">
-      <el-form-item label="用户名">
-        <el-input v-model="form.name" />
+    <el-form ref="form" :rules="rules" :model="form" label-width="100px" size="small">
+      <el-form-item label="账号/邮箱" prop="email">
+        <el-input v-model="form.email" placeholder="邮箱不允许更改" disabled />
       </el-form-item>
-      <el-form-item label="昵称">
-        <el-input v-model="form.name" />
+      <el-form-item label="姓名" prop="username">
+        <el-input v-model="form.username" placeholder="请输入姓名" />
       </el-form-item>
-      <el-form-item label="手机号">
-        <el-input v-model="form.name" />
+      <el-form-item label="手机" prop="cellphone">
+        <el-input v-model="form.cellphone" placeholder="11位手机号" />
       </el-form-item>
-      <el-form-item label="邮箱">
-        <el-input v-model="form.name" />
-      </el-form-item>
-      <el-form-item label="单位">
-        <el-input v-model="form.name" />
-      </el-form-item>
-      <el-form-item label="职务">
-        <el-input v-model="form.name" />
+      <el-form-item label="备注" prop="description">
+        <el-input v-model="form.description" placeholder="备注" />
       </el-form-item>
 
       <el-form-item>
@@ -29,30 +23,63 @@
 </template>
 
 <script>
+import { validCellphone } from '@/utils/validate'
+
 export default {
+
   data() {
+    // 表单校验：手机号校验
+    var checkPhone = (rule, value, callback) => {
+      if (!value) {
+        callback()
+      } else {
+        if (validCellphone(value)) {
+          callback()
+        } else {
+          callback(new Error('手机号格式错误'))
+        }
+      }
+    }
     return {
       form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
+        username: '',
+        email: '',
+        cellphone: '',
+        description: ''
+      },
+      rules: {
+        username: [
+          { required: true, message: '用户名为必填项', trigger: 'blur' },
+          { min: 2, max: 20, message: '用户名长度限度为 2 到 20 字', trigger: 'blur' }
+        ],
+        companyName: [
+          { min: 2, max: 20, message: '长度限度为 2 到 20 字', trigger: 'blur' }
+        ],
+        email: [
+          { required: true, message: '邮箱为必填项', trigger: 'blur' },
+          { type: 'email', message: '邮箱格式错误', trigger: 'blur' }
+        ],
+        cellphone: [
+          { validator: checkPhone, trigger: 'blur' }
+        ],
+        description: [
+          { max: 100, message: '最大长度限度为 100 字', trigger: 'blur' }
+        ]
       }
     }
   },
   methods: {
     onSubmit() {
-      this.$message('submit!')
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          console.log('onSubmit')
+        } else {
+          console.log('表单校验失败')
+        }
+      })
     },
     onCancel() {
-      this.$message({
-        message: 'cancel!',
-        type: 'warning'
-      })
+      this.$refs.form.resetFields()
     }
   }
 }

@@ -76,7 +76,7 @@
         :visible.sync="ticketDialogVisible"
         fullscreen
       >
-        <TicketDetail />
+        <TicketDetail :ticket-id-prop="ticketId" view-type="manager" />
       </el-dialog>
 
     </el-container>
@@ -102,13 +102,17 @@ export default {
         limit: 10,
         status: '', // 工单状态
         id: '',
-        priority: ''
+        priority: '',
+        scope: 'manager' // 查询范围 customer--个人工单 manager-全部工单
+
       },
       // 表格数据
       tableData: [],
       // 工单对话框可见性
       ticketDialogVisible: false,
-      activeMenuIndex: 'open'
+      activeMenuIndex: 'open',
+      // ticket id 子组件用
+      ticketId: -1
     }
   },
   mounted() {
@@ -149,7 +153,8 @@ export default {
       })
     },
     // 显示工单详情
-    doShowDetail() {
+    doShowDetail(ticketObj) {
+      this.ticketId = ticketObj.id
       this.ticketDialogVisible = true
     },
     // 重置查询条件

@@ -85,6 +85,7 @@ export function ticketListQueryApi(data) {
     data
   })
 }
+
 // 文件上传url
 export const fileUploadUrl = () => {
   // return '/ticket/file/upload'

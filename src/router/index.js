@@ -68,6 +68,19 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/my-setting',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: 'index',
+        name: '个人设置',
+        component: () => import('@/views/my-setting/index'),
+        meta: { title: '个人设置', icon: 'form' }
+      }
+    ]
+  },
+  {
     path: '/tk-center',
     component: Layout,
     children: [
@@ -79,18 +92,7 @@ export const constantRoutes = [
       }
     ]
   },
-  {
-    path: '/tk-detail',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: '工单详情',
-        component: () => import('@/views/tk-detail/index'),
-        meta: { title: '工单详情', icon: 'example' }
-      }
-    ]
-  },
+
   {
     path: '/cus-center',
     component: Layout,

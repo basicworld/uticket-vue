@@ -1,5 +1,12 @@
 const Mock = require('mockjs')
 const mockData = Mock.mock({
+  'noticeSettingItems|10': [{
+    'id|+1': 1,
+    'noticeSettingName': '@cword(4,8)', // 通知配置名称
+    'noticeSettingKey': '@word(5,10)', // 通知配置关键字
+    'selected': /(1|0)/, // 用户已选择 0--否  1--是
+    'noticeSettingGroupName': /(邮件通知|短信通知)/ // 通知所在组
+  }],
   'userItems|10': [{
     'id|+1': 1, // id
     'email': '@email', // email
@@ -173,6 +180,54 @@ module.exports = [
   // user update
   {
     url: '/user/update',
+    type: 'post',
+    response: config => {
+      return {
+        'code': 20000,
+        'message': 'success'
+      }
+    }
+  },
+  // user change password
+  {
+    url: '/user/password/update',
+    type: 'post',
+    response: config => {
+      return {
+        'code': 20000,
+        'message': 'success'
+      }
+    }
+  },
+  // user reset password
+  {
+    url: '/user/password/reset',
+    type: 'post',
+    response: config => {
+      return {
+        'code': 20000,
+        'message': 'success'
+      }
+    }
+  },
+  // user notice-setting query
+  {
+    url: '/user/notice-setting/list',
+    type: 'post',
+    response: config => {
+      const list = mockData.noticeSettingItems
+      return {
+        'code': 20000,
+        'message': 'success',
+        'data': list,
+        'total': 10
+      }
+    }
+  },
+
+  // user notice-setting update
+  {
+    url: '/user/notice-setting/update',
     type: 'post',
     response: config => {
       return {

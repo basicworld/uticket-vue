@@ -11,7 +11,7 @@
               <el-button style="float: right; padding: 3px 0" type="text" @click="ticketBasicInfoEditable=true">编辑</el-button>
             </div>
             <div>
-              {{ ticketBasicInfo.content }}
+              <span>{{ ticketBasicInfo.content }}</span>
             </div>
           </el-card>
           <!--  工单基本信息编辑框 -->
@@ -30,8 +30,8 @@
               </el-form-item>
             </el-form>
           </el-card>
-          <!--  工单处理框 -->
 
+          <!--  工单处理框 -->
           <el-tabs type="border-card" class="top-margin">
             <el-tab-pane label="回复">
               <el-form ref="actionFormReply" :model="newAction" label-width="70px" size="small">
@@ -44,7 +44,7 @@
                 </el-form-item>
               </el-form>
             </el-tab-pane>
-            <el-tab-pane label="分配">
+            <el-tab-pane v-if="viewType==='manager'" label="分配">
               <el-form ref="actionFormDevide" :model="newAction" label-width="70px" size="small">
                 <el-form-item label="选择客服" prop="assigneeId">
                   <el-select
@@ -73,7 +73,7 @@
                 </el-form-item>
               </el-form>
             </el-tab-pane>
-            <el-tab-pane label="解决">
+            <el-tab-pane v-if="viewType==='manager'" label="解决">
               <el-form ref="actionFormSolve" :model="newAction" label-width="70px" size="small">
                 <el-form-item label="处理描述">
                   <el-input v-model="newAction.content" type="textarea" />
@@ -84,7 +84,7 @@
                 </el-form-item>
               </el-form>
             </el-tab-pane>
-            <el-tab-pane label="关闭">
+            <el-tab-pane v-if="viewType==='manager'" label="关闭">
               <el-form ref="actionFormClose" :model="newAction" label-width="70px" size="small">
                 <el-form-item label="处理描述">
                   <el-input v-model="newAction.content" type="textarea" />
@@ -95,7 +95,7 @@
                 </el-form-item>
               </el-form>
             </el-tab-pane>
-            <el-tab-pane label="删除">
+            <el-tab-pane v-if="viewType==='manager'" label="删除">
               <el-form ref="actionFormDelete" :model="newAction" label-width="70px" size="small">
                 <el-form-item label="处理描述">
                   <el-input v-model="newAction.content" type="textarea" />
@@ -130,7 +130,6 @@
       </el-col>
       <el-col :span="8">
         <div class="grid-content bg-purple-light">
-
           <!--  工单属性展示框 -->
           <el-card v-if="!ticketAttributesEditable" class="">
             <div slot="header" class="clearfix">
@@ -339,13 +338,6 @@
       </el-col>
     </el-row>
 
-    <el-dialog
-      width="30%"
-      title="内层 Dialog"
-      :visible.sync="innerVisible"
-      append-to-body
-    />
-
   </div>
 </template>
 
@@ -355,6 +347,24 @@ import { ticketDetailQueryApi, ticketActionListQueryApi } from '@/api/ticket'
 import { RESP_CODE } from '@/utils/response-code'
 export default {
   name: 'TicketDetail',
+  props: {
+    // 视图类型 customer--客户视图 manager--客服管理视图
+    viewType: {
+      type: String,
+      required: true,
+      default() {
+        return 'customer'
+      }
+    },
+    ticketIdProp: {
+      type: Number,
+      required: true,
+      default() {
+        return -1
+      }
+    }
+
+  },
   data() {
     return {
       userSearchLoading: false,
@@ -363,18 +373,7 @@ export default {
       activityId: undefined,
       historyActionLoading: false,
       // 工单处理记录
-      historyActions: [{
-        content: '活动按期开始', // 处理内容
-        timestamp: '[客服]张三 2018-04-15' // 处理人类型、处理人、处理时间
-      }, {
-        content: '通过审核',
-        timestamp: '[客服]张三 2018-04-13'
-      }, {
-        content: '创建成功',
-        timestamp: '[客户]李四 2018-04-11'
-      }],
-      // dialog visible
-      innerVisible: false,
+      historyActions: [],
       ticketId: '', // 工单id
       ticketBasicInfoEditable: false,
       // 工单详细数据
@@ -420,10 +419,16 @@ export default {
         content: '', // 描述
         assigneeId: '' // 分配的客服id
       }
-
     }
   },
   watch: {
+    ticketIdProp: {
+      deep: true,
+      handler(val) {
+        this.ticketId = val
+        this.queryTicketDetails()
+      }
+    },
     // 监控api返回的工单属性详情
     ticketAllInfo: {
       deep: true,
@@ -439,9 +444,14 @@ export default {
       }
     }
   },
-  created() {
-    this.queryTicketDetails()
-    this.userRemoteSearch()
+  mounted() {
+    this.$nextTick(() => {
+      this.onCancel('form')
+      this.ticketId = this.ticketIdProp
+
+      this.queryTicketDetails()
+      this.userRemoteSearch()
+    })
   },
   methods: {
     // 根据action id 查询action列表
@@ -461,8 +471,8 @@ export default {
       })
     },
     // 根据id查询工单详情
-    queryTicketDetails(ticketId) {
-      ticketDetailQueryApi({ id: ticketId }).then(res => {
+    queryTicketDetails() {
+      ticketDetailQueryApi({ id: this.ticketId }).then(res => {
         if (res.code === RESP_CODE.OK) {
           this.ticketAllInfo = res.data
         } else {
@@ -477,6 +487,10 @@ export default {
       console.log('copyTicketAllInfo', this.ticketAllInfo)
       // id
       this.ticketId = this.ticketAllInfo.id
+      if (this.ticketId === undefined) {
+        this.ticketId = -1
+        return false
+      }
       this.activityId = this.ticketAllInfo.activityId
       // 工单基本属性
       this.ticketBasicInfo.subject = this.ticketAllInfo.subject
@@ -541,10 +555,7 @@ export default {
     },
     // 取消
     onCancel() {
-      this.$message({
-        message: 'cancel!',
-        type: 'warning'
-      })
+      this.ticketAllInfo = {}
     }
   }
 }

@@ -105,3 +105,51 @@ export function userRoleListQueryApi(data) {
     data
   })
 }
+
+/**
+ * 更新用户密码
+ * @param {*} data
+ */
+export function userPasswordUpdateApi(data) {
+  return request({
+    url: '/user/password/update',
+    method: 'post',
+    data
+  })
+}
+
+/**
+ * 重置用户密码
+ * @param {*} data
+ */
+export function userPasswordResetApi(data) {
+  return request({
+    url: '/user/password/reset',
+    method: 'post',
+    data
+  })
+}
+
+/**
+ * 获取用户通知配置列表
+ * @param {*} data
+ */
+export function userNoticeQueryApi(data) {
+  return request({
+    url: '/user/notice-setting/list',
+    method: 'post',
+    data
+  })
+}
+
+/**
+ * 更新用户通知配置
+ * @param {*} data
+ */
+export function userNoticeUpdateApi(data) {
+  return request({
+    url: '/user/notice-setting/update',
+    method: 'post',
+    data
+  })
+}
