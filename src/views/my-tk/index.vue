@@ -32,7 +32,7 @@
         <el-table-column fixed="right" label="操作" width="100">
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="doShowDetail(scope.row)">详情</el-button>
-            <el-button type="text" size="small">删除</el-button>
+            <el-button type="text" size="small" @click="deleteTicket(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -66,7 +66,7 @@
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import TicketDetail from '@/views/tk-detail'
-import { ticketListQueryApi } from '@/api/ticket'
+import { ticketListQueryApi, ticketDeleteApi } from '@/api/ticket'
 import { RESP_CODE } from '@/utils/response-code'
 import NewTicket from './components/NewTicket'
 export default {
@@ -97,7 +97,6 @@ export default {
     this.doQueryTableData()
   },
   methods: {
-
     handlePopNewTkDialog() {
       this.newTicketDialogVisible = true
     },
@@ -129,13 +128,25 @@ export default {
       })
     },
     // 显示工单详情
-    doShowDetail() {
+    doShowDetail(ticketObj) {
+      this.ticketId = ticketObj.id
       this.editTicketDialogVisible = true
     },
     // 重置查询条件
     onCancel() {
       this.listQuery.priority = ''
       this.listQuery.id = ''
+    },
+    deleteTicket(ticketObj) {
+      this.$confirm(`确定删除编号 #${ticketObj.id} 工单?`).then(() => {
+        ticketDeleteApi({ id: ticketObj.id }).then(res => {
+          if (res.code === RESP_CODE.OK) {
+            this.$message.success('删除成功')
+          } else {
+            this.$message.warning('删除异常：' + res.code)
+          }
+        }).catch(() => {})
+      }).catch(() => {})
     }
   }
 }
