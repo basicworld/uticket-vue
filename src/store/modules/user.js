@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/user'
+import { login, logout, userInfoQueryAPI } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
@@ -46,8 +46,9 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
-        const { data } = response
+      userInfoQueryAPI({ token: state.token }).then(response => {
+        // const { data } = response
+        const data = response.data
 
         if (!data) {
           return reject('Verification failed, please Login again.')

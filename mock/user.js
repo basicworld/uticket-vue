@@ -72,7 +72,7 @@ const users = {
 module.exports = [
   // user login
   {
-    url: '/vue-admin-template/user/login',
+    url: '/user/login',
     type: 'post',
     response: config => {
       const { username } = config.body
@@ -95,10 +95,10 @@ module.exports = [
 
   // get user info
   {
-    url: '/vue-admin-template/user/info\.*',
-    type: 'get',
+    url: '/user/info',
+    type: 'post',
     response: config => {
-      const { token } = config.query
+      const { token } = config.body
       const info = users[token]
 
       // mock error
@@ -118,7 +118,7 @@ module.exports = [
 
   // user logout
   {
-    url: '/vue-admin-template/user/logout',
+    url: '/user/logout',
     type: 'post',
     response: _ => {
       return {

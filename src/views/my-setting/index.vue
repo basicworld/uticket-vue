@@ -12,7 +12,7 @@
         <el-menu-item index="2">
           <span slot="title">修改密码</span>
         </el-menu-item>
-        <el-menu-item index="3">
+        <el-menu-item v-if="false" index="3">
           <span slot="title">消息设置</span>
         </el-menu-item>
       </el-menu>
