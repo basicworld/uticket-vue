@@ -76,7 +76,7 @@
         :visible.sync="ticketDialogVisible"
         fullscreen
       >
-        <TicketDetail :ticket-id-prop="ticketId" view-type="manager" />
+        <TicketDetail :ticket-id-prop="ticketId" view-type="staff" />
       </el-dialog>
 
     </el-container>
@@ -103,7 +103,7 @@ export default {
         status: '', // 工单状态
         id: '',
         priority: '',
-        scope: 'manager' // 查询范围 customer--个人工单 manager-全部工单
+        scope: 'staff' // 查询范围 customer--个人工单 staff-全部工单
 
       },
       // 表格数据

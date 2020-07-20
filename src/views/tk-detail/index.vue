@@ -44,7 +44,7 @@
                 </el-form-item>
               </el-form>
             </el-tab-pane>
-            <el-tab-pane v-if="viewType==='manager'" label="分配">
+            <el-tab-pane v-if="viewType==='staff'" label="分配">
               <el-form ref="actionFormDevide" :model="newAction" label-width="70px" size="small">
                 <el-form-item label="选择客服" prop="assigneeId">
                   <el-select
@@ -73,7 +73,7 @@
                 </el-form-item>
               </el-form>
             </el-tab-pane>
-            <el-tab-pane v-if="viewType==='manager'" label="解决">
+            <el-tab-pane v-if="viewType==='staff'" label="解决">
               <el-form ref="actionFormSolve" :model="newAction" label-width="70px" size="small">
                 <el-form-item label="处理描述">
                   <el-input v-model="newAction.content" type="textarea" />
@@ -84,7 +84,7 @@
                 </el-form-item>
               </el-form>
             </el-tab-pane>
-            <el-tab-pane v-if="viewType==='manager'" label="关闭">
+            <el-tab-pane v-if="viewType==='staff'" label="关闭">
               <el-form ref="actionFormClose" :model="newAction" label-width="70px" size="small">
                 <el-form-item label="处理描述">
                   <el-input v-model="newAction.content" type="textarea" />
@@ -95,7 +95,7 @@
                 </el-form-item>
               </el-form>
             </el-tab-pane>
-            <el-tab-pane v-if="viewType==='manager'" label="删除">
+            <el-tab-pane v-if="viewType==='staff'" label="删除">
               <el-form ref="actionFormDelete" :model="newAction" label-width="70px" size="small">
                 <el-form-item label="处理描述">
                   <el-input v-model="newAction.content" type="textarea" />
@@ -348,7 +348,7 @@ import { RESP_CODE } from '@/utils/response-code'
 export default {
   name: 'TicketDetail',
   props: {
-    // 视图类型 customer--客户视图 manager--客服管理视图
+    // 视图类型 customer--客户视图 staff--客服管理视图
     viewType: {
       type: String,
       required: true,

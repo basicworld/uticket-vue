@@ -3,7 +3,7 @@
 
     <el-main>
       <el-form :inline="true" :model="listQuery" size="small">
-        <el-form-item label="名称">
+        <el-form-item label="角色名称">
           <el-input v-model="listQuery.roleName" placeholder="搜索角色名称" />
         </el-form-item>
         <el-form-item>

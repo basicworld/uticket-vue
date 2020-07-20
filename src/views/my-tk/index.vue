@@ -57,7 +57,7 @@
       :visible.sync="editTicketDialogVisible"
       fullscreen
     >
-      <TicketDetail />
+      <TicketDetail :ticket-id-prop="ticketId" view-type="customer" />
     </el-dialog>
 
   </el-container>
@@ -83,13 +83,14 @@ export default {
         status: '', // 工单状态
         id: '',
         priority: '',
-        scope: 'customer' // 查询范围 customer--个人工单 manager-全部工单
+        scope: 'customer' // 查询范围 customer--个人工单 staff-全部工单
       },
       // 表格数据
       tableData: [],
       // 工单对话框可见性
       editTicketDialogVisible: false,
-      newTicketDialogVisible: false
+      newTicketDialogVisible: false,
+      ticketId: -1
     }
   },
   mounted() {
