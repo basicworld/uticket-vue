@@ -23,7 +23,7 @@
         <el-table-column prop="description" label="描述" />
         <el-table-column prop="address" label="公司地址" />
         <el-table-column prop="domains" label="公司域名" />
-        <el-table-column prop="updatedAt" label="更新时间" />
+        <el-table-column prop="updateTime" label="更新时间" />
         <el-table-column fixed="right" label="操作" width="100">
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="handleShowEditDialog(scope.row)">编辑</el-button>

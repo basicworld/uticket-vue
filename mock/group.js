@@ -5,8 +5,8 @@ const mockData = Mock.mock({
     'id|+1': 1, // id
     groupName: '@cword(5,10)', // 组名
     description: '@cword(10,20)', // 描述
-    createdAt: '@datetime', // 创建
-    updatedAt: '@datetime',
+    createTime: '@datetime', // 创建
+    updateTime: '@datetime',
     userCount: /(3|5|10)/ // 用户数
   }],
   'groupMemberItems|3': [{

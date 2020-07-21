@@ -55,8 +55,8 @@ const mockData = Mock.mock({
     ],
     'creatorId': 1, // 创建人id
     'creatorName': '@cname',
-    'createdAt': '@datetime', // 创建时间
-    'updatedAt': '2017-08-18 12:06:02', // 更新时间
+    'createTime': '@datetime', // 创建时间
+    'updateTime': '2017-08-18 12:06:02', // 更新时间
     'solvingAt': null, // 开始解决时间
     'resolvedAt': null, // 解决时间
     'closedAt': null, // 关闭时间

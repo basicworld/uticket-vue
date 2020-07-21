@@ -6,8 +6,8 @@ const mockData = Mock.mock({
     roleName: '@cword(5,10)', // 角色名称
     description: '@cword(10,20)', // 描述
     permissionIds: '1,4,5', // 对应的权限id，格式： id1,id2,id3
-    createdAt: '@datetime', // 创建时间
-    updatedAt: '@datetime' // 更新时间
+    createTime: '@datetime', // 创建时间
+    updateTime: '@datetime' // 更新时间
   }]
 })
 

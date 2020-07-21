@@ -182,7 +182,7 @@
               <el-row class="attr-row">
                 <el-col :span="6"><span class="attr-table-title">创建时间:</span></el-col>
                 <el-col :span="18">
-                  <span>{{ ticketAttributes.createdAt }}</span>
+                  <span>{{ ticketAttributes.createTime }}</span>
                 </el-col>
               </el-row>
             </div>
@@ -259,8 +259,8 @@
                 <el-form-item label="创建人" prop="creatorName">
                   <el-input v-model="ticketAttributes.creatorName" disabled />
                 </el-form-item>
-                <el-form-item label="创建时间" prop="createdAt">
-                  <el-input v-model="ticketAttributes.createdAt" disabled />
+                <el-form-item label="创建时间" prop="createTime">
+                  <el-input v-model="ticketAttributes.createTime" disabled />
                 </el-form-item>
 
                 <el-form-item>
@@ -400,7 +400,7 @@ export default {
         assigneeName: '', // 受理人姓名
         followers: [], // 关注人
         followerNames: '',
-        createdAt: ''// 创建时间
+        createTime: ''// 创建时间
         //
       },
       customerAttributesEditable: false,
@@ -516,7 +516,7 @@ export default {
         }
         this.ticketAttributes.followerNames = names.join()
       }
-      this.ticketAttributes.createdAt = this.ticketAllInfo.createdAt// 创建时间
+      this.ticketAttributes.createTime = this.ticketAllInfo.createTime// 创建时间
       // 客户属性
       this.customerAttributes.customerId = this.ticketAllInfo.customerId // 客户id
       this.customerAttributes.username = this.ticketAllInfo.customerName // 名称

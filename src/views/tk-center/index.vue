@@ -53,7 +53,7 @@
           <el-table-column prop="priorityCn" label="优先级" />
           <el-table-column prop="assigneeName" label="受理客服" />
           <el-table-column prop="customerName" label="客户" />
-          <el-table-column prop="createdAt" label="创建时间" />
+          <el-table-column prop="createTime" label="创建时间" />
           <el-table-column prop="content" label="内容" min-width="300" show-overflow-tooltip />
           <el-table-column fixed="right" label="操作" width="100">
             <template slot-scope="scope">

@@ -17,7 +17,7 @@
         <el-table-column type="selection" width="45" />
         <el-table-column prop="roleName" label="名称" />
         <el-table-column prop="description" label="描述" />
-        <el-table-column prop="createdAt" label="创建时间" />
+        <el-table-column prop="createTime" label="创建时间" />
         <el-table-column fixed="right" label="操作" width="200">
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="handleEditRole(scope.row)">编辑</el-button>
